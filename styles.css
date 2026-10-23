@@ -27,16 +27,17 @@ svg{display:block}strong{font-weight:600}
 .view-tab:hover{color:var(--text)}.view-tab.is-active{color:var(--text);border-bottom-color:var(--text)}
 .github-link{display:inline-flex;gap:9px;align-items:center;justify-self:end;font-size:12px;color:var(--text);white-space:nowrap;padding:10px 0}
 .github-link:hover{text-decoration:none;color:#bbb}.github-link>svg:first-child{height:19px;width:19px}.external-arrow{height:12px;width:12px;color:var(--muted)}
-/* The hero is an integrated introduction, not a full-screen splash.
-   Background artwork contains no text; copy remains selectable HTML. */
-.hero{position:relative;isolation:isolate;display:flex;align-items:center;min-height:304px;margin:0 0 25px;padding:29px 0 32px}
-.hero::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background-color:var(--bg);background-position:center center;background-repeat:no-repeat;background-size:cover;mask-image:linear-gradient(to bottom,transparent 0%,#000 10%,#000 86%,transparent 100%)}
+/* Full-bleed hero sections. The artwork spans the full viewport width and roughly 70%+ of the first screen,
+   while the actual ranking/comparison interface starts in the next section below. */
+.hero{position:relative;isolation:isolate;display:flex;align-items:center;min-height:74vh;width:100vw;margin:0 calc(50% - 50vw) 34px;padding:clamp(58px,9vh,96px) max(16px,calc((100vw - 1120px)/2 + 34px)) clamp(44px,8vh,84px);overflow:hidden;border-bottom:1px solid var(--line);background:#0f0f0f}
+.hero::before{content:"";position:absolute;inset:0;z-index:-2;pointer-events:none;background-color:#0f0f0f;background-position:center center;background-repeat:no-repeat;background-size:cover}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,rgba(10,10,10,.9) 0%,rgba(10,10,10,.72) 34%,rgba(10,10,10,.42) 57%,rgba(10,10,10,.18) 74%,rgba(10,10,10,.5) 100%),linear-gradient(180deg,rgba(6,6,6,.2) 0%,rgba(8,8,8,.14) 50%,rgba(21,21,21,.92) 100%)}
 .hero--ranking::before{background-image:url("./assets/ranking-desktop.webp")}
 .hero--comparison::before{background-image:url("./assets/comparison-desktop.webp")}
-.hero-content{max-width:650px;position:relative;z-index:1}
-.hero-title{font-family:Georgia,"Times New Roman",serif;font-weight:400;letter-spacing:-.038em;line-height:1.055;font-size:clamp(38px,4.25vw,52px);margin:0;max-width:640px;text-wrap:balance}
+.hero-content{max-width:700px;position:relative;z-index:1;padding-top:10px}
+.hero-title{font-family:Georgia,"Times New Roman",serif;font-weight:400;letter-spacing:-.04em;line-height:1.02;font-size:clamp(46px,5.4vw,76px);margin:0;max-width:720px;text-wrap:balance}
 .hero-muted{color:#a9a9a5}
-.hero-description{font-size:13px;line-height:1.68;color:#b4b4b0;max-width:565px;margin:16px 0 0;text-wrap:pretty}
+.hero-description{font-size:15px;line-height:1.72;color:#b8b8b3;max-width:600px;margin:20px 0 0;text-wrap:pretty}
 
 .app-view[hidden]{display:none!important}.section-bar{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:19px;gap:10px}
 .section-bar h2{font-size:29px;letter-spacing:-.048em;font-weight:500;line-height:1.2;margin:0}.result-count{font-size:11px;color:var(--faint);font-variant-numeric:tabular-nums;white-space:nowrap}
@@ -118,7 +119,7 @@ svg{display:block}strong{font-weight:600}
   .brand{font-size:19px}
   .github-link{grid-column:2;grid-row:1}
   .view-tabs{grid-column:1/-1;grid-row:2;height:55px;justify-content:flex-start;gap:28px;margin-top:11px}
-  .hero{min-height:295px;margin-bottom:22px}
+  .hero{min-height:72vh;margin-bottom:30px;padding-inline:max(20px,calc((100vw - 1120px)/2 + 20px))}
   .filters{grid-template-columns:minmax(0,1fr) 160px 170px}
   .compare-grid{gap:10px}.compare-content{padding:15px}.compare-top{gap:8px}
 }
@@ -131,12 +132,12 @@ svg{display:block}strong{font-weight:600}
   .metric-bar{display:none}.lang-cell{gap:9px}.rank-index{display:none}
   .compare-grid{grid-template-columns:1fr;gap:10px}.description{min-height:0}.code-body{min-height:110px}
   .interpret-grid{grid-template-columns:1fr;gap:13px}.explainer-note{margin-top:15px}
-  .hero{min-height:270px;padding:23px 0 26px;margin-bottom:20px}
+  .hero{min-height:71vh;padding:46px 20px 34px;margin-bottom:28px}
   .hero--ranking::before{background-image:url("./assets/ranking-mobile.webp");background-position:right 53%}
   .hero--comparison::before{background-image:url("./assets/comparison-mobile.webp");background-position:right 48%}
-  .hero-content{max-width:510px}
-  .hero-title{font-size:clamp(32px,6.9vw,42px);line-height:1.055;letter-spacing:-.038em}
-  .hero-description{font-size:12px;line-height:1.58;max-width:455px;margin-top:13px}
+  .hero-content{max-width:560px}
+  .hero-title{font-size:clamp(38px,8vw,52px);line-height:1.04;letter-spacing:-.04em}
+  .hero-description{font-size:13px;line-height:1.62;max-width:470px;margin-top:14px}
   .footer{margin-top:47px}
 }
 @media(max-width:430px){
@@ -144,9 +145,9 @@ svg{display:block}strong{font-weight:600}
   .topbar{padding-top:21px}.brand{font-size:17px;letter-spacing:-.055em}
   .github-link .external-arrow{display:none}.github-link>svg:first-child{height:18px;width:18px}.github-link{gap:7px;font-size:11px}
   .view-tabs{gap:25px;height:52px;margin-top:7px}.view-tab{font-size:12px}
-  .hero{min-height:265px;padding:24px 0 24px;margin-bottom:17px}
-  .hero-title{font-size:clamp(30px,8vw,35px)}
-  .hero-description{font-size:12px;line-height:1.55;margin-top:12px}
+  .hero{min-height:70vh;padding:42px 16px 30px;margin-bottom:24px}
+  .hero-title{font-size:clamp(34px,10vw,44px)}
+  .hero-description{font-size:13px;line-height:1.58;margin-top:14px}
   .section-bar{margin-bottom:17px}.section-bar h2{font-size:25px}
   .filters{margin-bottom:13px}.select-wrap select,.dropdown-trigger,.search-field input{min-height:43px;height:43px;font-size:11px}.select-wrap select,.dropdown-trigger{padding-left:10px;padding-right:28px}.select-wrap:after{right:12px}
   .col-language{width:46%}.col-num{width:18%}
@@ -171,4 +172,4 @@ svg{display:block}strong{font-weight:600}
 
 @media(max-width:430px){.dropdown-option{min-height:43px;font-size:12px}.dropdown-options{max-height:min(340px,60dvh)}.compare-identity .dropdown-trigger{font-size:12px;font-weight:550}}
 
-@media(max-width:355px){.hero{min-height:276px;padding-top:20px;padding-bottom:21px}.hero-title{font-size:29px}.hero-description{font-size:11.5px;line-height:1.5}}
+@media(max-width:355px){.hero{min-height:70vh;padding:38px 12px 28px;margin-bottom:22px}.hero-title{font-size:31px}.hero-description{font-size:12px;line-height:1.55}}
