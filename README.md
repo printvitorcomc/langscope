@@ -5,13 +5,14 @@ Mini-app estático, mobile-first, com **22 linguagens de programação**: rankin
 ## Funcionalidades
 
 - Ordenação por dificuldade, uso e nome; busca e filtro por área.
-- Tabela com linguagem, dificuldade (/10), uso (%) e nota relativa de uso (/10).
-- Comparação de duas linguagens para `2 + 2`, saída esperada, cópia do código e avaliação da dificuldade.
+- Tabela com linguagem, dificuldade, uso (%) e popularidade (índice relativo de 0 a 10).
+- Comparação de duas linguagens para `2 + 2`, descrição acessível acima do código, saída esperada, cópia do código e avaliação da dificuldade.
+- Caixas de código com altura estável e rolagem interna para preservar o alinhamento entre os dois painéis.
 - Logotipos das linguagens, navegação por abas e seleções persistidas localmente.
 - Menus personalizados, ancorados abaixo dos campos, com rolagem touch e navegação por teclado.
 - Ranking com 22 linhas, sem limite de altura nem paginação no mobile.
 - Visual escuro, responsivo, sem dependências de framework ou etapa de compilação.
-- Duas heroes editoriais compactas, com fundos abstratos independentes para desktop e mobile e textos HTML acessíveis. A interface principal permanece visível na primeira dobra.
+- Duas heroes em largura total, com cerca de 70% da altura da tela, fundos abstratos próprios para desktop e mobile e textos HTML acessíveis.
 
 ## Execução local
 
@@ -43,7 +44,7 @@ Documentação: [Cloudflare Pages](https://developers.cloudflare.com/pages/frame
 ## Dados e limitações
 
 - **Adoção**: Stack Exchange Inc. (2026), [Stack Overflow Developer Survey](https://survey.stackoverflow.co/2026/technology/data/languages). Percentual de respondentes que declararam usar cada tecnologia; **não** representa vagas de emprego. Dados da pesquisa sob [ODbL 1.0](https://opendatacommons.org/licenses/odbl/1-0/).
-- **Nota de uso**: `uso ÷ 62 × 10`, com JavaScript (62%) normalizado em 10.
+- **Popularidade**: `uso ÷ 62 × 10`, com JavaScript (62%) normalizado em 10. É uma escala relativa de utilização, não uma contagem de vagas.
 - **Dificuldade**: avaliação analítica de aprendizagem inicial, não resultado de experimento científico. Pesos: conceitos 35%, sintaxe 30%, complexidade técnica 20%, ferramentas 15%.
 - **SQL**: sem dificuldade numérica comparável, por ter finalidade declarativa.
 - **Bash/Shell e Assembly**: a pesquisa agrupa dialetos; o laboratório usa Bash e Linux x86-64 NASM.
