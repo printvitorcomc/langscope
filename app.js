@@ -62,8 +62,10 @@ selected.left=findLang(selected.left).id;
 selected.right=findLang(selected.right).id;
 let activeView = 'ranking';
 let toastTimeout;
+let openDropdown = null;
 
 function showView(view,updateHash=true){
+  closeDropdown();
   activeView = view==='lab'?'lab':'ranking';
   $('#ranking-view').hidden=activeView!=='ranking';
   $('#lab-view').hidden=activeView!=='lab';
@@ -98,6 +100,7 @@ function sortedLanguages(){
 function renderRanking(){
   const languages=sortedLanguages();
   $('#empty-state').hidden=languages.length>0;
+  $('#results-count').textContent=`${languages.length} / ${LANGUAGES.length} linguagens`;
   $('#rankings-body').innerHTML=languages.map((item,i)=>{
     const diff=difficulty(item),usage=usageScore(item),tone=diff===null?'score-na':'';
     const scoreDisplay=diff===null?'N/A':decimal(diff);
@@ -112,7 +115,7 @@ function compareMarkup(item,side){
   const factors=item.f===null
     ? '<p class="sql-note">A dificuldade de SQL não é comparada diretamente às demais linguagens.</p>'
     : `<div class="factor-grid">${FACTORS.map((factor,i)=>`<div><div class="factor-label"><span>${factor.label}</span><strong>${item.f[i]}/10</strong></div><div class="factor-track"><span style="width:${item.f[i]*10}%"></span></div></div>`).join('')}</div>`;
-  return `<div class="compare-top"><div class="compare-identity">${logoMarkup(item)}<label class="select-wrap"><span class="sr-only">Linguagem ${side==='left'?'esquerda':'direita'}</span><select data-choice="${side}">${optionList(item.id)}</select></label></div><div class="small-rating"><strong>${diff===null?'—':decimal(diff)} <span class="outof">/10</span></strong><small>Dificuldade</small></div></div>
+  return `<div class="compare-top"><div class="compare-identity">${logoMarkup(item)}<div class="select-wrap"><span class="sr-only">Linguagem ${side==='left'?'esquerda':'direita'}</span><select data-choice="${side}">${optionList(item.id)}</select></div></div><div class="small-rating"><strong>${diff===null?'—':decimal(diff)} <span class="outof">/10</span></strong><small>Dificuldade</small></div></div>
     <div class="code-card"><div class="code-top"><span class="file-tag">${escapeHtml(item.name.toLowerCase())}</span><button type="button" class="copy-btn" data-copy="${side}" aria-label="Copiar código ${escapeHtml(item.name)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>Copiar</button></div><div class="code-body"><pre><code>${escapeHtml(item.code)}</code></pre></div></div>
     <div class="result-row"><span class="result-label">${item.id==='sql'?'Resultado da consulta':'Saída esperada'}</span></div><div class="result-box">${escapeHtml(item.out||'4')}</div>
     <p class="description">${escapeHtml(item.reason)}</p>${item.note?`<p class="note">${escapeHtml(item.note)}</p>`:''}
@@ -120,9 +123,118 @@ function compareMarkup(item,side){
 }
 
 function renderCompare(){
+  closeDropdown();
   $('#compare-left').innerHTML=compareMarkup(findLang(selected.left),'left');
   $('#compare-right').innerHTML=compareMarkup(findLang(selected.right),'right');
+  $$('#lab-view select[data-choice]').forEach(enhanceSelect);
 }
+
+// Custom anchored listbox: the source <select> keeps the existing filter/change logic.
+// Its native picker is left as a fallback if JavaScript fails to initialize.
+let dropdownSeq = 0;
+function enhanceSelect(select){
+  if(select.dataset.enhanced==='true')return;
+  const wrap=select.closest('.select-wrap');
+  const label=wrap.querySelector('.sr-only')?.textContent || 'Selecionar';
+  const id=`dropdown-${++dropdownSeq}`;
+  const trigger=document.createElement('button');
+  trigger.type='button';trigger.className='dropdown-trigger';
+  trigger.setAttribute('aria-label',label);
+  trigger.setAttribute('aria-haspopup','listbox');
+  trigger.setAttribute('aria-controls',id);
+  trigger.setAttribute('aria-expanded','false');
+  const menu=document.createElement('div');
+  menu.className='dropdown-options';menu.id=id;menu.setAttribute('role','listbox');
+  menu.setAttribute('aria-label',label);menu.hidden=true;
+  const isLanguage=select.hasAttribute('data-choice');
+  for(const option of select.options){
+    const item=document.createElement('div');
+    item.className='dropdown-option';item.setAttribute('role','option');
+    item.setAttribute('tabindex','-1');item.dataset.value=option.value;
+    item.setAttribute('aria-selected',String(option.value===select.value));
+    item.id=`${id}-opt-${menu.children.length}`;
+    if(isLanguage){
+      const lang=findLang(option.value);
+      item.innerHTML=`${logoMarkup(lang)}<span class="chosen-label">${escapeHtml(option.textContent)}</span><span class="chosen-check" aria-hidden="true">✓</span>`;
+    }else{
+      item.innerHTML=`<span class="chosen-label">${escapeHtml(option.textContent)}</span><span class="chosen-check" aria-hidden="true">✓</span>`;
+    }
+    item.addEventListener('click',()=>{
+      const changed=select.value!==item.dataset.value;
+      select.value=item.dataset.value;
+      syncSelect();closeDropdown();
+      if(changed)select.dispatchEvent(new Event('change',{bubbles:true}));
+      if(trigger.isConnected)trigger.focus({preventScroll:true});
+    });
+    menu.append(item);
+  }
+  function syncSelect(){
+    const selectedOption=[...select.options].find(o=>o.value===select.value);
+    // The comparison panel already displays its language logo beside the field.
+    trigger.innerHTML=`<span class="chosen-label">${escapeHtml(selectedOption?.textContent || '')}</span>`;
+    menu.querySelectorAll('[role="option"]').forEach(item=>item.setAttribute('aria-selected',String(item.dataset.value===select.value)));
+  }
+  wrap.append(trigger,menu);
+  select.hidden=true;select.tabIndex=-1;select.dataset.enhanced='true';
+  function open(){
+    if(openDropdown===wrap){closeDropdown();return;}
+    closeDropdown();
+    menu.hidden=false;wrap.classList.add('is-open');
+    wrap.closest('.compare-panel')?.classList.add('menu-open');
+    trigger.setAttribute('aria-expanded','true');
+    openDropdown=wrap;
+    menu.scrollTop=0; // Open at the start of the list, never centered on the selected item.
+    // Keep the menu under its field and allow the document to scroll to reveal it.
+    requestAnimationFrame(()=>{
+      if(openDropdown!==wrap)return;
+      const bottom=menu.getBoundingClientRect().bottom;
+      const limit=window.visualViewport?.height || window.innerHeight;
+      if(bottom>limit-12)window.scrollBy({top:bottom-limit+18,behavior:'smooth'});
+    });
+  }
+  trigger.addEventListener('click',open);
+  trigger.addEventListener('keydown',event=>{
+    if(['ArrowDown','ArrowUp','Enter',' '].includes(event.key)){
+      event.preventDefault();if(openDropdown!==wrap)open();
+      const first=menu.querySelector('[role="option"]');
+      const last=menu.lastElementChild;
+      (event.key==='ArrowUp'?last:first)?.focus({preventScroll:true});
+    }else if(event.key==='Escape'&&openDropdown===wrap){event.preventDefault();closeDropdown();}
+  });
+  menu.addEventListener('keydown',event=>{
+    const options=[...menu.querySelectorAll('[role="option"]')];
+    const i=options.indexOf(document.activeElement);
+    let next;
+    if(event.key==='ArrowDown')next=options[Math.min(i+1,options.length-1)];
+    else if(event.key==='ArrowUp')next=options[Math.max(i-1,0)];
+    else if(event.key==='Home')next=options[0];
+    else if(event.key==='End')next=options.at(-1);
+    else if(event.key==='Enter'||event.key===' '){event.preventDefault();document.activeElement.click();return;}
+    else if(event.key==='Escape'){event.preventDefault();closeDropdown();trigger.focus({preventScroll:true});return;}
+    else if(event.key==='Tab'){closeDropdown();return;}
+    else return;
+    event.preventDefault();next?.focus();
+  });
+  select.addEventListener('change',syncSelect);
+  syncSelect();
+}
+function closeDropdown(){
+  if(!openDropdown)return;
+  const wrap=openDropdown;openDropdown=null;
+  wrap.classList.remove('is-open');
+  wrap.closest('.compare-panel')?.classList.remove('menu-open');
+  const menu=wrap.querySelector('.dropdown-options');if(menu)menu.hidden=true;
+  const trigger=wrap.querySelector('.dropdown-trigger');if(trigger)trigger.setAttribute('aria-expanded','false');
+}
+document.addEventListener('pointerdown',event=>{
+  if(openDropdown && !openDropdown.contains(event.target))closeDropdown();
+});
+document.addEventListener('keydown',event=>{
+  if(event.key==='Escape'&&openDropdown){
+    const trigger=openDropdown.querySelector('.dropdown-trigger');
+    closeDropdown();trigger?.focus({preventScroll:true});
+  }
+});
 
 function showToast(message){
   const el=$('#toast');el.textContent=message;el.classList.add('visible');
@@ -146,7 +258,7 @@ $$('.view-tab').forEach(tab=>tab.addEventListener('click',()=>showView(tab.datas
 $('#search').addEventListener('input',renderRanking);
 $('#area').addEventListener('change',()=>{writeStore('langscope:area',$('#area').value);renderRanking();});
 $('#sort').addEventListener('change',()=>{writeStore('langscope:sort',$('#sort').value);renderRanking();});
-$('#clear-filters').addEventListener('click',()=>{$('#search').value='';$('#area').value='all';$('#sort').value='easy';writeStore('langscope:area','all');writeStore('langscope:sort','easy');renderRanking();});
+$('#clear-filters').addEventListener('click',()=>{$('#search').value='';$('#area').value='all';$('#sort').value='easy';$('#area').dispatchEvent(new Event('change',{bubbles:true}));$('#sort').dispatchEvent(new Event('change',{bubbles:true}));renderRanking();});
 $('#rankings-body').addEventListener('click',event=>{
   const button=event.target.closest('[data-lang]');if(!button)return;
   const id=button.dataset.lang;
@@ -172,5 +284,6 @@ window.addEventListener('keydown',event=>{
 
 $('#sort').value=['easy','hard','popular','least','name'].includes(readStore('langscope:sort','easy'))?readStore('langscope:sort','easy'):'easy';
 $('#area').value=['all','IA e dados','Backend','Web','Automação','Mobile','Sistemas','Games','Pesquisa'].includes(readStore('langscope:area','all'))?readStore('langscope:area','all'):'all';
+$$('.filters select').forEach(enhanceSelect);
 renderRanking();
 showView(location.hash==='#comparar'?'lab':'ranking',false);

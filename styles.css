@@ -29,7 +29,7 @@ svg{display:block}strong{font-weight:600}
 .github-link:hover{text-decoration:none;color:#bbb}.github-link>svg:first-child{height:19px;width:19px}.external-arrow{height:12px;width:12px;color:var(--muted)}
 .intro{font-size:13px;color:var(--muted);line-height:1.65;margin:30px 0 41px;max-width:465px}
 .app-view[hidden]{display:none!important}.section-bar{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:19px;gap:10px}
-.section-bar h1{font-size:29px;letter-spacing:-.048em;font-weight:500;line-height:1.2;margin:0}
+.section-bar h1{font-size:29px;letter-spacing:-.048em;font-weight:500;line-height:1.2;margin:0}.result-count{font-size:11px;color:var(--faint);font-variant-numeric:tabular-nums;white-space:nowrap}
 .filters{display:grid;grid-template-columns:minmax(210px,1fr) 190px 190px;gap:9px;margin-bottom:19px}
 .search-field{border:1px solid var(--line);position:relative;display:flex;align-items:center;min-width:0;background:var(--surface)}
 .search-field>svg{width:17px;height:17px;position:absolute;left:14px;color:var(--faint);pointer-events:none}
@@ -38,9 +38,28 @@ svg{display:block}strong{font-weight:600}
 .search-kbd{font-size:11px;color:var(--faint);border:1px solid var(--line);border-radius:2px;position:absolute;right:12px;width:20px;height:20px;display:flex;align-items:center;justify-content:center;pointer-events:none}
 .select-wrap{display:block;position:relative;min-width:0}
 .select-wrap:after{content:"";width:6px;height:6px;border:solid var(--muted);border-width:0 1px 1px 0;transform:rotate(45deg) translateY(-2px);pointer-events:none;position:absolute;right:16px;top:50%}
-.select-wrap select{appearance:none;width:100%;min-height:46px;background:var(--surface);border:1px solid var(--line);border-radius:0;color:var(--text);font-size:12px;padding:10px 32px 10px 14px;min-width:0;cursor:pointer}
-.select-wrap select:hover,.search-field:focus-within,.select-wrap select:focus{border-color:#767672}
-.table-card{border-top:1px solid var(--line);overflow-x:auto;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+.select-wrap select,.dropdown-trigger{appearance:none;width:100%;min-height:46px;background:var(--surface);border:1px solid var(--line);border-radius:0;color:var(--text);font-size:12px;padding:10px 32px 10px 14px;min-width:0;cursor:pointer;text-align:left}.select-wrap select[hidden]{display:none!important}
+.select-wrap select:hover,.search-field:focus-within,.select-wrap select:focus,.dropdown-trigger:hover,.dropdown-trigger[aria-expanded="true"]{border-color:#767672}
+/* Anchored custom selects: always open downward from the field. */
+.compare-panel.menu-open{position:relative;z-index:45}
+.select-wrap.is-open{z-index:40}
+.select-wrap.is-open:after{transform:rotate(225deg) translate(-2px,-2px)}
+.dropdown-trigger{display:flex;align-items:center;justify-content:flex-start;gap:8px;white-space:nowrap;overflow:hidden}
+.dropdown-trigger .chosen-label{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dropdown-trigger .lang-mark{width:23px;height:23px;border-radius:2px}
+.dropdown-trigger .lang-mark img{width:17px;height:17px;inset:3px}
+.dropdown-trigger .lang-mark .fallback-mark{font-size:8px}
+.dropdown-options{position:absolute;top:calc(100% + 5px);left:0;right:0;z-index:50;max-height:min(304px,55dvh);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y;border:1px solid #55554f;background:#1d1d1d;box-shadow:0 16px 40px #0009;padding:4px;scrollbar-width:thin;scrollbar-color:#686863 transparent}
+.dropdown-options[hidden]{display:none!important}
+.dropdown-option{display:flex;align-items:center;gap:9px;padding:10px 9px;min-height:39px;color:#bababa;font-size:12px;cursor:pointer;outline:0;user-select:none}
+.dropdown-option:hover,.dropdown-option:focus-visible{background:#30302e;color:var(--text)}
+.dropdown-option[aria-selected="true"]{color:#fafaf7;background:#292927}
+.dropdown-option .chosen-check{margin-left:auto;color:#dadad5;font-size:12px;visibility:hidden}
+.dropdown-option[aria-selected="true"] .chosen-check{visibility:visible}
+.dropdown-option .lang-mark{width:23px;height:23px;border-radius:2px}
+.dropdown-option .lang-mark img{width:17px;height:17px;inset:3px}
+.dropdown-option .lang-mark .fallback-mark{font-size:8px}
+.table-card{border-top:1px solid var(--line);overflow:visible;max-height:none}
 .language-table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:12px;font-variant-numeric:tabular-nums}
 .col-language{width:43%}.col-num{width:19%}
 .language-table th{text-align:left;border-bottom:1px solid var(--line);padding:18px 14px 16px;color:var(--muted);font-size:11px;font-weight:400;white-space:nowrap}
@@ -107,11 +126,11 @@ svg{display:block}strong{font-weight:600}
 @media(max-width:430px){
   .shell{padding:0 16px}
   .topbar{padding-top:21px}.brand{font-size:17px;letter-spacing:-.055em}
-  .github-link span,.external-arrow{display:none}.github-link>svg:first-child{height:20px;width:20px}
+  .github-link .external-arrow{display:none}.github-link>svg:first-child{height:18px;width:18px}.github-link{gap:7px;font-size:11px}
   .view-tabs{gap:25px;height:52px;margin-top:7px}.view-tab{font-size:12px}
   .intro{font-size:12px;line-height:1.7;margin:21px 0 32px}
   .section-bar{margin-bottom:17px}.section-bar h1{font-size:25px}
-  .filters{margin-bottom:13px}.select-wrap select,.search-field input{min-height:43px;height:43px;font-size:11px}.select-wrap select{padding-left:10px;padding-right:28px}.select-wrap:after{right:12px}
+  .filters{margin-bottom:13px}.select-wrap select,.dropdown-trigger,.search-field input{min-height:43px;height:43px;font-size:11px}.select-wrap select,.dropdown-trigger{padding-left:10px;padding-right:28px}.select-wrap:after{right:12px}
   .col-language{width:46%}.col-num{width:18%}
   .language-table th{font-size:10px;padding:13px 5px 12px}.language-table td{padding:10px 5px}
   .language-table th:first-child,.language-table td:first-child{padding-left:0}
@@ -131,3 +150,5 @@ svg{display:block}strong{font-weight:600}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 .lang-mark img.is-loaded + .fallback-mark{visibility:hidden}
 .lang-mark img[hidden]{display:none}
+
+@media(max-width:430px){.dropdown-option{min-height:43px;font-size:12px}.dropdown-options{max-height:min(340px,60dvh)}.compare-identity .dropdown-trigger{font-size:12px;font-weight:550}}

@@ -1,4 +1,4 @@
-# Programming Languages · v0.1
+# langscope · v0.3
 
 Mini-app estático, mobile-first, com **22 linguagens de programação**: ranking de dificuldade e adoção, filtros e comparação de códigos equivalentes.
 
@@ -8,6 +8,8 @@ Mini-app estático, mobile-first, com **22 linguagens de programação**: rankin
 - Tabela com linguagem, dificuldade (/10), uso (%) e nota relativa de uso (/10).
 - Comparação de duas linguagens para `2 + 2`, saída esperada, cópia do código e avaliação da dificuldade.
 - Logotipos das linguagens, navegação por abas e seleções persistidas localmente.
+- Menus personalizados, ancorados abaixo dos campos, com rolagem touch e navegação por teclado.
+- Ranking com 22 linhas, sem limite de altura nem paginação no mobile.
 - Visual escuro, responsivo, sem dependências de framework ou etapa de compilação.
 
 ## Execução local

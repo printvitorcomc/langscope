@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#151515">
   <meta name="description" content="Explore 22 linguagens de programação por dificuldade, uso e exemplos de código lado a lado.">
-  <title>Programming Languages — Ranking e Comparação</title>
+  <title>langscope — Ranking e Comparação</title>
   <link rel="icon" type="image/svg+xml" href="./favicon.svg">
   <link rel="stylesheet" href="./styles.css">
   <script defer src="./app.js"></script>
@@ -13,7 +13,7 @@
 <body>
   <div class="shell">
     <header class="topbar">
-      <a class="brand" href="#ranking" aria-label="Programming Languages, ranking">Programming Languages<span class="brand-period" aria-hidden="true">.</span></a>
+      <a class="brand" href="#ranking" aria-label="langscope, ranking">langscope<span class="brand-period" aria-hidden="true">.</span></a>
       <nav class="view-tabs" aria-label="Navegação principal">
         <button type="button" class="view-tab is-active" data-view="ranking" aria-current="page">Ranking</button>
         <button type="button" class="view-tab" data-view="lab">Comparação</button>
@@ -29,7 +29,7 @@
       <p class="intro">Explore e compare 22 linguagens de programação por dificuldade, uso e exemplos de código.</p>
 
       <section id="ranking-view" class="app-view" aria-labelledby="ranking-title">
-        <div class="section-bar"><h1 id="ranking-title">Ranking</h1></div>
+        <div class="section-bar"><h1 id="ranking-title">Ranking</h1><span class="result-count" id="results-count" aria-live="polite"></span></div>
         <div class="filters" role="search" aria-label="Filtros do ranking">
           <label class="search-field">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg>
@@ -37,12 +37,12 @@
             <input id="search" type="search" placeholder="Buscar linguagem" autocomplete="off" spellcheck="false">
             <kbd class="search-kbd" aria-hidden="true">/</kbd>
           </label>
-          <label class="select-wrap"><span class="sr-only">Área de aplicação</span>
+          <div class="select-wrap"><span class="sr-only">Área de aplicação</span>
             <select id="area"><option value="all">Todas as áreas</option><option>IA e dados</option><option>Backend</option><option>Web</option><option>Automação</option><option>Mobile</option><option>Sistemas</option><option>Games</option><option>Pesquisa</option></select>
-          </label>
-          <label class="select-wrap"><span class="sr-only">Ordenação</span>
+          </div>
+          <div class="select-wrap"><span class="sr-only">Ordenação</span>
             <select id="sort"><option value="easy">Menor dificuldade</option><option value="hard">Maior dificuldade</option><option value="popular">Maior uso</option><option value="least">Menor uso</option><option value="name">Ordem alfabética</option></select>
-          </label>
+          </div>
         </div>
 
         <div class="table-card">
@@ -80,7 +80,7 @@
       </section>
     </main>
 
-    <footer class="footer"><span>Programming Languages</span><span>v0.1</span></footer>
+    <footer class="footer"><span>langscope</span><span>v0.3</span></footer>
   </div>
   <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 </body>
