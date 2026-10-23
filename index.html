@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="./styles.css">
   <script defer src="./app.js"></script>
 </head>
-<body>
+<body id="top">
   <div class="shell">
     <header class="topbar">
       <a class="brand" href="#ranking" aria-label="langscope, ranking">langscope<span class="brand-period" aria-hidden="true">.</span></a>
@@ -137,9 +137,50 @@
         </section>
       </section>
     </main>
-
-    <footer class="footer"><span>langscope</span><span>v0.4</span></footer>
   </div>
+
+  <!-- A quiet transition from the application's charcoal UI into the illustrated sky. -->
+  <div class="footer-arrival" aria-hidden="true">
+    <span class="footer-arrival__glow"></span>
+    <span class="footer-arrival__orbit footer-arrival__orbit--left"></span>
+    <span class="footer-arrival__orbit footer-arrival__orbit--right"></span>
+  </div>
+
+  <!-- Shared footer for both SPA views. The artwork is decorative, not a content image. -->
+  <footer class="site-footer" aria-label="Rodapé do langscope">
+    <picture class="site-footer__art" aria-hidden="true">
+      <source media="(max-width: 700px)" srcset="./assets/celestial-cowboy-mobile.webp" type="image/webp">
+      <img src="./assets/celestial-cowboy-desktop.webp" alt="" loading="lazy" decoding="async" width="1444" height="1089">
+    </picture>
+    <div class="site-footer__content">
+      <div class="site-footer__sky">
+        <div class="site-footer__wordmark" aria-label="langscope">langscope<span aria-hidden="true">.</span></div>
+        <div class="site-footer__information">
+          <p class="site-footer__description">22 linguagens por uso e dificuldade.<span>Compare códigos lado a lado.</span></p>
+          <nav class="site-footer__navigation" aria-label="Links do rodapé">
+            <div class="site-footer__link-group">
+              <span class="site-footer__eyebrow">EXPLORAR</span>
+              <a href="#ranking" data-footer-view="ranking" class="site-footer__link">Ranking <span aria-hidden="true">↗</span></a>
+              <a href="#comparar" data-footer-view="lab" class="site-footer__link">Comparação <span aria-hidden="true">↗</span></a>
+            </div>
+            <div class="site-footer__link-group">
+              <span class="site-footer__eyebrow">PROJETO</span>
+              <a href="https://vitorcomc.com.br" target="_blank" rel="noopener noreferrer" class="site-footer__link">vitorcomc.com.br <span aria-hidden="true">↗</span></a>
+              <a href="https://github.com/printvitorcomc/langscope" target="_blank" rel="noopener noreferrer" class="site-footer__link">GitHub <span aria-hidden="true">↗</span></a>
+            </div>
+          </nav>
+        </div>
+      </div>
+      <div class="site-footer__ground">
+        <span class="site-footer__version">LANGSCOPE <span aria-hidden="true">/</span> v0.4</span>
+        <button type="button" class="site-footer__to-top" id="back-to-top" aria-label="Voltar ao topo da página">
+          Voltar pra cima
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20V4M5 11l7-7 7 7"/></svg>
+        </button>
+      </div>
+    </div>
+  </footer>
+
   <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 </body>
 </html>

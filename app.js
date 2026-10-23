@@ -74,6 +74,10 @@ function showView(view,updateHash=true){
     btn.classList.toggle('is-active',active);
     if(active)btn.setAttribute('aria-current','page');else btn.removeAttribute('aria-current');
   });
+  $$('[data-footer-view]').forEach(link=>{
+    if(link.dataset.footerView===activeView) link.setAttribute('aria-current','page');
+    else link.removeAttribute('aria-current');
+  });
   if(activeView==='lab')renderCompare();
   if(updateHash){const hash=activeView==='lab'?'#comparar':'#ranking';if(location.hash!==hash)location.hash=hash;window.scrollTo(0,0);}
 }
@@ -293,6 +297,15 @@ async function copyCode(side){
 
 // Eventos, sem bibliotecas ou build.
 $$('.view-tab').forEach(tab=>tab.addEventListener('click',()=>showView(tab.dataset.view)));
+// Footer navigation uses the same SPA state as the header tabs (no page reload).
+$$('[data-footer-view]').forEach(link=>link.addEventListener('click',event=>{
+  event.preventDefault();
+  showView(link.dataset.footerView);
+}));
+// Using scrollTo instead of a #top hash preserves the active Comparison view.
+$('#back-to-top').addEventListener('click',()=>{
+  window.scrollTo({top:0,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
+});
 $('#search').addEventListener('input',renderRanking);
 $('#area').addEventListener('change',()=>{writeStore('langscope:area',$('#area').value);renderRanking();});
 $('#sort').addEventListener('change',()=>{writeStore('langscope:sort',$('#sort').value);renderRanking();});
