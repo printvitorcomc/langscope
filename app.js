@@ -38,10 +38,20 @@ const difficulty = item => item.f === null ? null : Math.round(item.f.reduce((ac
 const usageScore = item => Math.round(item.pct/62*100)/10;
 const decimal = n => n.toFixed(1).replace('.',',');
 const escapeHtml = text => String(text).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
-const palette = [
-  ['#f0eaff','#7562b4'],['#e3f5ee','#33876b'],['#fff0e2','#b37b39'],['#e8efff','#5279bb'],
-  ['#fff0dd','#b2872f'],['#f4e9ee','#a5647d'],['#e6f5f4','#328b8a'],['#e9edf5','#566d97']
-];
+// Logotipos Devicon; os ícones de SQL e Assembly são representações genéricas.
+const ICON_NAMES = {py:'python',ruby:'ruby',lua:'lua',gd:'godot',js:'javascript',php:'php',r:'r',bash:'bash',ps:'powershell',ts:'typescript',go:'go',dart:'dart',cs:'csharp',kt:'kotlin',java:'java',swift:'swift',c:'c',hs:'haskell',rs:'rust',cpp:'cplusplus'};
+function logoMarkup(item){
+  const alias=ICON_NAMES[item.id];
+  const src=alias?`https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${alias}/${alias}-original.svg`:`./icons/${item.id==='asm'?'assembly':'sql'}.svg`;
+  return `<span class="lang-mark" aria-hidden="true"><img src="${src}" alt="" loading="lazy" decoding="async"><span class="fallback-mark">${escapeHtml(item.symbol)}</span></span>`;
+}
+// A fallback inicial permanece visível até a imagem carregar. Se falhar, exibe a sigla.
+document.addEventListener('load',event=>{
+  if(event.target.matches?.('.lang-mark img'))event.target.classList.add('is-loaded');
+},true);
+document.addEventListener('error',event=>{
+  if(event.target.matches?.('.lang-mark img'))event.target.hidden=true;
+},true);
 const $ = selector => document.querySelector(selector);
 const $$ = selector => [...document.querySelectorAll(selector)];
 const readStore = (key,def) => {try{return localStorage.getItem(key)||def;}catch{return def;}};
@@ -87,13 +97,11 @@ function sortedLanguages(){
 
 function renderRanking(){
   const languages=sortedLanguages();
-  $('#result-count').textContent=`${languages.length} ${languages.length===1?'linguagem':'linguagens'}`;
   $('#empty-state').hidden=languages.length>0;
   $('#rankings-body').innerHTML=languages.map((item,i)=>{
-    const diff=difficulty(item),usage=usageScore(item),tone=diff===null?'score-na':diff<=3.5?'score-low':diff<=6.5?'score-med':'score-high';
-    const [bg,fg]=palette[LANGUAGES.indexOf(item)%palette.length];
+    const diff=difficulty(item),usage=usageScore(item),tone=diff===null?'score-na':'';
     const scoreDisplay=diff===null?'N/A':decimal(diff);
-    return `<tr><td><div class="lang-cell"><span class="rank-index">${String(i+1).padStart(2,'0')}</span><span class="lang-mark" style="--mark-bg:${bg};--mark-color:${fg}" aria-hidden="true">${escapeHtml(item.symbol)}</span><span class="lang-main"><button type="button" class="lang-name-button" data-lang="${item.id}" aria-label="Comparar código de ${escapeHtml(item.name)}">${escapeHtml(item.name)}</button><span class="lang-area">${escapeHtml(item.tags[0])}</span></span></div></td><td><span class="score ${tone}" title="Dificuldade estimada ${scoreDisplay} de 10">${scoreDisplay}</span></td><td><span class="metric-cell"><span class="metric-bar" aria-hidden="true"><i style="width:${item.pct/62*100}%"></i></span><span class="usage-note">${decimal(item.pct)}%</span></span></td><td><span class="usage-rating">${decimal(usage)}</span></td></tr>`;
+    return `<tr><td><div class="lang-cell"><span class="rank-index">${String(i+1).padStart(2,'0')}</span>${logoMarkup(item)}<span class="lang-main"><button type="button" class="lang-name-button" data-lang="${item.id}" aria-label="Comparar código de ${escapeHtml(item.name)}">${escapeHtml(item.name)}</button><span class="lang-area">${escapeHtml(item.tags[0])}</span></span></div></td><td><span class="score ${tone}" title="Dificuldade estimada ${scoreDisplay} de 10">${scoreDisplay}</span></td><td><span class="metric-cell"><span class="metric-bar" aria-hidden="true"><i style="width:${item.pct/62*100}%"></i></span><span class="usage-note">${decimal(item.pct)}%</span></span></td><td><span class="usage-rating">${decimal(usage)}</span></td></tr>`;
   }).join('');
 }
 
@@ -101,11 +109,14 @@ function optionList(selectedId){return LANGUAGES.map(item=>`<option value="${ite
 
 function compareMarkup(item,side){
   const diff=difficulty(item);
-  const factors=item.f===null?'':`<details class="detail-toggle"><summary>Como foi avaliada a dificuldade? <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg></summary><div class="factor-grid">${FACTORS.map((factor,i)=>`<div><div class="factor-label"><span>${factor.label}</span><strong>${item.f[i]}/10</strong></div><div class="factor-track"><span style="width:${item.f[i]*10}%"></span></div></div>`).join('')}</div></details>`;
-  return `<div class="compare-top"><label class="select-wrap"><span class="sr-only">Linguagem ${side==='left'?'esquerda':'direita'}</span><select data-choice="${side}">${optionList(item.id)}</select></label><div class="small-rating"><strong>${diff===null?'—':decimal(diff)} <span style="color:#a4acb8;font-size:11px">/10</span></strong><small>Dificuldade</small></div></div>
+  const factors=item.f===null
+    ? '<p class="sql-note">A dificuldade de SQL não é comparada diretamente às demais linguagens.</p>'
+    : `<div class="factor-grid">${FACTORS.map((factor,i)=>`<div><div class="factor-label"><span>${factor.label}</span><strong>${item.f[i]}/10</strong></div><div class="factor-track"><span style="width:${item.f[i]*10}%"></span></div></div>`).join('')}</div>`;
+  return `<div class="compare-top"><div class="compare-identity">${logoMarkup(item)}<label class="select-wrap"><span class="sr-only">Linguagem ${side==='left'?'esquerda':'direita'}</span><select data-choice="${side}">${optionList(item.id)}</select></label></div><div class="small-rating"><strong>${diff===null?'—':decimal(diff)} <span class="outof">/10</span></strong><small>Dificuldade</small></div></div>
     <div class="code-card"><div class="code-top"><span class="file-tag">${escapeHtml(item.name.toLowerCase())}</span><button type="button" class="copy-btn" data-copy="${side}" aria-label="Copiar código ${escapeHtml(item.name)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>Copiar</button></div><div class="code-body"><pre><code>${escapeHtml(item.code)}</code></pre></div></div>
-    <div class="result-row"><svg class="result-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="m7 9 3 3-3 3m6 0h4"/></svg><span class="result-label">${item.id==='sql'?'Resultado da consulta':'Saída esperada'}</span></div><div class="result-box">${escapeHtml(item.out||'4')}</div>
-    <p class="description">${escapeHtml(item.reason)}</p>${item.note?`<p class="note">${escapeHtml(item.note)}</p>`:''}${factors}`;
+    <div class="result-row"><span class="result-label">${item.id==='sql'?'Resultado da consulta':'Saída esperada'}</span></div><div class="result-box">${escapeHtml(item.out||'4')}</div>
+    <p class="description">${escapeHtml(item.reason)}</p>${item.note?`<p class="note">${escapeHtml(item.note)}</p>`:''}
+    <section class="difficulty-details" aria-label="Avaliação da Dificuldade: ${escapeHtml(item.name)}"><h2>Avaliação da Dificuldade</h2>${factors}</section>`;
 }
 
 function renderCompare(){

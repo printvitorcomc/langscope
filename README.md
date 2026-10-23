@@ -1,61 +1,60 @@
-# Langscope
+# Programming Languages · v0.1
 
-Mini-app estático, mobile-first, para explorar **22 tecnologias de programação** por dificuldade estimada, adoção entre desenvolvedores e exemplos equivalentes de código.
-
-**Sem framework, dependências de JavaScript, banco de dados ou build.** Basta abrir `index.html` no navegador. A fonte web é opcional; há fallback para fontes do sistema.
+Mini-app estático, mobile-first, com **22 linguagens de programação**: ranking de dificuldade e adoção, filtros e comparação de códigos equivalentes.
 
 ## Funcionalidades
 
-- Ranking com busca, filtros por área e ordenação por dificuldade, uso ou nome.
-- Tabela com dificuldade estimada (/10), uso na pesquisa (%), nota de uso normalizada (/10).
-- Comparação de duas linguagens lado a lado, código para `2 + 2`, saída esperada e botão para copiar.
-- Detalhamento dos quatro critérios de dificuldade, campo metodológico e fonte consultável.
-- Layout responsivo, navegação por abas, estado de seleção persistente no navegador.
+- Ordenação por dificuldade, uso e nome; busca e filtro por área.
+- Tabela com linguagem, dificuldade (/10), uso (%) e nota relativa de uso (/10).
+- Comparação de duas linguagens para `2 + 2`, saída esperada, cópia do código e avaliação da dificuldade.
+- Logotipos das linguagens, navegação por abas e seleções persistidas localmente.
+- Visual escuro, responsivo, sem dependências de framework ou etapa de compilação.
 
-## Rodar localmente
+## Execução local
 
-Abra `index.html` diretamente ou use um servidor HTTP simples:
+Abra `index.html` no navegador ou rode:
 
 ```bash
 python3 -m http.server 8000
 ```
 
-Depois acesse http://localhost:8000.
+Acesse http://localhost:8000.
 
-## Publicar no GitHub + Cloudflare Pages
+**Ícones:** os logotipos de 20 linguagens são servidos pelo catálogo [Devicon](https://github.com/devicons/devicon) por meio do jsDelivr. Sem acesso à internet, aparecem as siglas. SQL e Assembly não têm um logotipo universal; os dois usam símbolos genéricos armazenados em `icons/`.
 
-1. Crie um repositório no GitHub e envie os arquivos da pasta `langscope` **para a raiz do repositório**.
-2. No [Cloudflare Dashboard](https://dash.cloudflare.com/), abra **Workers & Pages → Create → Pages → Import an existing Git repository** e selecione o repositório.
-3. Configure o projeto:
+## Publicação no GitHub + Cloudflare Pages
+
+1. Envie o conteúdo desta pasta para a raiz do repositório [printvitorcomc/langscope](https://github.com/printvitorcomc/langscope).
+2. No [Cloudflare Dashboard](https://dash.cloudflare.com/), use **Workers & Pages → Pages → Import an existing Git repository**.
+3. Configure:
 
    | Campo | Valor |
    | --- | --- |
    | Framework preset | None |
    | Production branch | `main` |
-   | Build command | deixe em branco (ou `exit 0`, caso exija) |
+   | Build command | vazio (ou `exit 0`, se exigido) |
    | Build output directory | `.` |
 
-4. Publique. Novos commits na branch de produção geram novos deployments automaticamente.
+Documentação: [Cloudflare Pages](https://developers.cloudflare.com/pages/framework-guides/deploy-anything/).
 
-Documentação: [Cloudflare Pages — Static HTML](https://developers.cloudflare.com/pages/framework-guides/deploy-anything/) · [Git integration](https://developers.cloudflare.com/pages/configuration/git-integration/).
+## Dados e limitações
 
-## Origem e interpretação dos dados
-
-- **Adoção:** Stack Exchange Inc. (2026), [Stack Overflow Developer Survey — Programming, scripting, and markup languages](https://survey.stackoverflow.co/2026/technology/data/languages), 14.099 respondentes. Licença de dados: [ODbL 1.0](https://opendatacommons.org/licenses/odbl/1-0/). Indica **uso declarado**, não número de vagas.
-- **Nota de uso:** valor relativo a JavaScript (62,0% = nota 10,0); `uso_da_linguagem ÷ 62 × 10`.
-- **Dificuldade:** julgamento analítico sobre a aprendizagem inicial, em escala de 1 a 10, com pesos: sintaxe (30%), conceitos (35%), ferramentas (15%), complexidade técnica (20%). Não é uma estatística extraída da pesquisa nem um ranking científico universal.
-- **SQL:** linguagem declarativa para bancos de dados, propositalmente sem nota de dificuldade comparável à das linguagens de propósito geral.
-- **Bash/Shell e Assembly:** pesquisas agrupam diversas variantes; os exemplos correspondem, respectivamente, a Bash e Linux x86-64 NASM.
-- Os exemplos de código apresentam a **saída esperada**. O aplicativo não oferece execução real de outras linguagens no navegador.
+- **Adoção**: Stack Exchange Inc. (2026), [Stack Overflow Developer Survey](https://survey.stackoverflow.co/2026/technology/data/languages). Percentual de respondentes que declararam usar cada tecnologia; **não** representa vagas de emprego. Dados da pesquisa sob [ODbL 1.0](https://opendatacommons.org/licenses/odbl/1-0/).
+- **Nota de uso**: `uso ÷ 62 × 10`, com JavaScript (62%) normalizado em 10.
+- **Dificuldade**: avaliação analítica de aprendizagem inicial, não resultado de experimento científico. Pesos: conceitos 35%, sintaxe 30%, complexidade técnica 20%, ferramentas 15%.
+- **SQL**: sem dificuldade numérica comparável, por ter finalidade declarativa.
+- **Bash/Shell e Assembly**: a pesquisa agrupa dialetos; o laboratório usa Bash e Linux x86-64 NASM.
+- **Código**: exibe a saída **esperada**, não executa linguagens no navegador.
 
 ## Estrutura
 
 ```
-index.html   interface e marcação semântica
-styles.css   layout e estilos responsivos
-app.js       dados, notas, filtros e comparador
-favicon.svg  ícone da aba
-README.md    instruções e fontes
+index.html         marcação e navegação
+styles.css         visual e responsividade
+app.js             dados, ranking, filtros e comparação
+favicon.svg        ícone da aba
+icons/             símbolos genéricos para SQL e Assembly
+README.md          documentação
 ```
 
-Para alterar notas, categorias ou exemplos, edite o array `LANGUAGES` em `app.js`.
+Para atualizar linguagens, exemplos, categorias ou critérios, edite o array `LANGUAGES` e os pesos `FACTORS` em `app.js`.
