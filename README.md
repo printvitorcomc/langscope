@@ -1,4 +1,4 @@
-# langscope · v0.3
+# langscope · v0.4
 
 Mini-app estático, mobile-first, com **22 linguagens de programação**: ranking de dificuldade e adoção, filtros e comparação de códigos equivalentes.
 
@@ -11,6 +11,7 @@ Mini-app estático, mobile-first, com **22 linguagens de programação**: rankin
 - Menus personalizados, ancorados abaixo dos campos, com rolagem touch e navegação por teclado.
 - Ranking com 22 linhas, sem limite de altura nem paginação no mobile.
 - Visual escuro, responsivo, sem dependências de framework ou etapa de compilação.
+- Duas heroes editoriais compactas, com fundos abstratos independentes para desktop e mobile e textos HTML acessíveis. A interface principal permanece visível na primeira dobra.
 
 ## Execução local
 
@@ -56,6 +57,7 @@ styles.css         visual e responsividade
 app.js             dados, ranking, filtros e comparação
 favicon.svg        ícone da aba
 icons/             símbolos genéricos para SQL e Assembly
+assets/            4 fundos WebP sem texto para as duas heroes
 README.md          documentação
 ```
 

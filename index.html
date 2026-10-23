@@ -26,10 +26,14 @@
     </header>
 
     <main>
-      <p class="intro">Explore e compare 22 linguagens de programação por dificuldade, uso e exemplos de código.</p>
-
       <section id="ranking-view" class="app-view" aria-labelledby="ranking-title">
-        <div class="section-bar"><h1 id="ranking-title">Ranking</h1><span class="result-count" id="results-count" aria-live="polite"></span></div>
+        <div class="hero hero--ranking" aria-labelledby="ranking-hero-title">
+          <div class="hero-content">
+            <h1 id="ranking-hero-title" class="hero-title"><span class="hero-muted">Afinal de contas,</span> qual linguagem aprender primeiro?</h1>
+            <p class="hero-description">Se você tá perdido, comece explorando as 22 principais linguagens de programação por sua dificuldade e uso mercadológico. Depois, escolha duas linguagens pra comparar sua complexidade, com exemplos reais.</p>
+          </div>
+        </div>
+        <div class="section-bar" id="ranking-tools"><h2 id="ranking-title">Ranking</h2><span class="result-count" id="results-count" aria-live="polite"></span></div>
         <div class="filters" role="search" aria-label="Filtros do ranking">
           <label class="search-field">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg>
@@ -71,7 +75,13 @@
       </section>
 
       <section id="lab-view" class="app-view" aria-labelledby="lab-title" hidden>
-        <div class="section-bar lab-heading"><h1 id="lab-title">Comparação</h1><span class="formula" aria-label="Exemplo de dois mais dois igual a quatro">2 + 2 → 4</span></div>
+        <div class="hero hero--comparison" aria-labelledby="comparison-hero-title">
+          <div class="hero-content">
+            <h1 id="comparison-hero-title" class="hero-title"><span class="hero-muted">Qual faz mais</span> sentido pra você?</h1>
+            <p class="hero-description">Escolha duas linguagens e compare lado a lado sua dificuldade, uso mercadológico e exemplos reais de código. Assim fica mais fácil entender as diferenças antes de decidir por onde começar.</p>
+          </div>
+        </div>
+        <div class="section-bar lab-heading" id="comparison-tools"><h2 id="lab-title">Comparação</h2><span class="formula" aria-label="Exemplo de dois mais dois igual a quatro">2 + 2 → 4</span></div>
         <div class="compare-grid">
           <article class="compare-panel" data-side="left"><div class="compare-content" id="compare-left"></div></article>
           <article class="compare-panel" data-side="right"><div class="compare-content" id="compare-right"></div></article>
@@ -80,7 +90,7 @@
       </section>
     </main>
 
-    <footer class="footer"><span>langscope</span><span>v0.3</span></footer>
+    <footer class="footer"><span>langscope</span><span>v0.4</span></footer>
   </div>
   <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 </body>

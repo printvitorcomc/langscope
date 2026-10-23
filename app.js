@@ -75,7 +75,7 @@ function showView(view,updateHash=true){
     if(active)btn.setAttribute('aria-current','page');else btn.removeAttribute('aria-current');
   });
   if(activeView==='lab')renderCompare();
-  if(updateHash){const hash=activeView==='lab'?'#comparar':'#ranking';if(location.hash!==hash)location.hash=hash;}
+  if(updateHash){const hash=activeView==='lab'?'#comparar':'#ranking';if(location.hash!==hash)location.hash=hash;window.scrollTo(0,0);}
 }
 
 function sortedLanguages(){

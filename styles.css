@@ -27,9 +27,19 @@ svg{display:block}strong{font-weight:600}
 .view-tab:hover{color:var(--text)}.view-tab.is-active{color:var(--text);border-bottom-color:var(--text)}
 .github-link{display:inline-flex;gap:9px;align-items:center;justify-self:end;font-size:12px;color:var(--text);white-space:nowrap;padding:10px 0}
 .github-link:hover{text-decoration:none;color:#bbb}.github-link>svg:first-child{height:19px;width:19px}.external-arrow{height:12px;width:12px;color:var(--muted)}
-.intro{font-size:13px;color:var(--muted);line-height:1.65;margin:30px 0 41px;max-width:465px}
+/* The hero is an integrated introduction, not a full-screen splash.
+   Background artwork contains no text; copy remains selectable HTML. */
+.hero{position:relative;isolation:isolate;display:flex;align-items:center;min-height:304px;margin:0 0 25px;padding:29px 0 32px}
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background-color:var(--bg);background-position:center center;background-repeat:no-repeat;background-size:cover;mask-image:linear-gradient(to bottom,transparent 0%,#000 10%,#000 86%,transparent 100%)}
+.hero--ranking::before{background-image:url("./assets/ranking-desktop.webp")}
+.hero--comparison::before{background-image:url("./assets/comparison-desktop.webp")}
+.hero-content{max-width:650px;position:relative;z-index:1}
+.hero-title{font-family:Georgia,"Times New Roman",serif;font-weight:400;letter-spacing:-.038em;line-height:1.055;font-size:clamp(38px,4.25vw,52px);margin:0;max-width:640px;text-wrap:balance}
+.hero-muted{color:#a9a9a5}
+.hero-description{font-size:13px;line-height:1.68;color:#b4b4b0;max-width:565px;margin:16px 0 0;text-wrap:pretty}
+
 .app-view[hidden]{display:none!important}.section-bar{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:19px;gap:10px}
-.section-bar h1{font-size:29px;letter-spacing:-.048em;font-weight:500;line-height:1.2;margin:0}.result-count{font-size:11px;color:var(--faint);font-variant-numeric:tabular-nums;white-space:nowrap}
+.section-bar h2{font-size:29px;letter-spacing:-.048em;font-weight:500;line-height:1.2;margin:0}.result-count{font-size:11px;color:var(--faint);font-variant-numeric:tabular-nums;white-space:nowrap}
 .filters{display:grid;grid-template-columns:minmax(210px,1fr) 190px 190px;gap:9px;margin-bottom:19px}
 .search-field{border:1px solid var(--line);position:relative;display:flex;align-items:center;min-width:0;background:var(--surface)}
 .search-field>svg{width:17px;height:17px;position:absolute;left:14px;color:var(--faint);pointer-events:none}
@@ -108,7 +118,7 @@ svg{display:block}strong{font-weight:600}
   .brand{font-size:19px}
   .github-link{grid-column:2;grid-row:1}
   .view-tabs{grid-column:1/-1;grid-row:2;height:55px;justify-content:flex-start;gap:28px;margin-top:11px}
-  .intro{margin:23px 0 34px}
+  .hero{min-height:295px;margin-bottom:22px}
   .filters{grid-template-columns:minmax(0,1fr) 160px 170px}
   .compare-grid{gap:10px}.compare-content{padding:15px}.compare-top{gap:8px}
 }
@@ -121,6 +131,12 @@ svg{display:block}strong{font-weight:600}
   .metric-bar{display:none}.lang-cell{gap:9px}.rank-index{display:none}
   .compare-grid{grid-template-columns:1fr;gap:10px}.description{min-height:0}.code-body{min-height:110px}
   .interpret-grid{grid-template-columns:1fr;gap:13px}.explainer-note{margin-top:15px}
+  .hero{min-height:270px;padding:23px 0 26px;margin-bottom:20px}
+  .hero--ranking::before{background-image:url("./assets/ranking-mobile.webp");background-position:right 53%}
+  .hero--comparison::before{background-image:url("./assets/comparison-mobile.webp");background-position:right 48%}
+  .hero-content{max-width:510px}
+  .hero-title{font-size:clamp(32px,6.9vw,42px);line-height:1.055;letter-spacing:-.038em}
+  .hero-description{font-size:12px;line-height:1.58;max-width:455px;margin-top:13px}
   .footer{margin-top:47px}
 }
 @media(max-width:430px){
@@ -128,8 +144,10 @@ svg{display:block}strong{font-weight:600}
   .topbar{padding-top:21px}.brand{font-size:17px;letter-spacing:-.055em}
   .github-link .external-arrow{display:none}.github-link>svg:first-child{height:18px;width:18px}.github-link{gap:7px;font-size:11px}
   .view-tabs{gap:25px;height:52px;margin-top:7px}.view-tab{font-size:12px}
-  .intro{font-size:12px;line-height:1.7;margin:21px 0 32px}
-  .section-bar{margin-bottom:17px}.section-bar h1{font-size:25px}
+  .hero{min-height:265px;padding:24px 0 24px;margin-bottom:17px}
+  .hero-title{font-size:clamp(30px,8vw,35px)}
+  .hero-description{font-size:12px;line-height:1.55;margin-top:12px}
+  .section-bar{margin-bottom:17px}.section-bar h2{font-size:25px}
   .filters{margin-bottom:13px}.select-wrap select,.dropdown-trigger,.search-field input{min-height:43px;height:43px;font-size:11px}.select-wrap select,.dropdown-trigger{padding-left:10px;padding-right:28px}.select-wrap:after{right:12px}
   .col-language{width:46%}.col-num{width:18%}
   .language-table th{font-size:10px;padding:13px 5px 12px}.language-table td{padding:10px 5px}
@@ -152,3 +170,5 @@ svg{display:block}strong{font-weight:600}
 .lang-mark img[hidden]{display:none}
 
 @media(max-width:430px){.dropdown-option{min-height:43px;font-size:12px}.dropdown-options{max-height:min(340px,60dvh)}.compare-identity .dropdown-trigger{font-size:12px;font-weight:550}}
+
+@media(max-width:355px){.hero{min-height:276px;padding-top:20px;padding-bottom:21px}.hero-title{font-size:29px}.hero-description{font-size:11.5px;line-height:1.5}}
