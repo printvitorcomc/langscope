@@ -283,3 +283,12 @@ svg{display:block}strong{font-weight:600}
   .explanation--cards .explanation-card h3{font-size:19px}
   .explanation--cards .explanation-card p{font-size:12.5px;line-height:1.7}
 }
+
+/* Extra spacing after the ranking before the interpretation cards; no effect on comparison. */
+#ranking-view > .explanation--cards { margin-top: 176px; }
+@media (max-width: 700px) {
+  #ranking-view > .explanation--cards { margin-top: 140px; }
+}
+@media (max-width: 430px) {
+  #ranking-view > .explanation--cards { margin-top: 132px; }
+}
