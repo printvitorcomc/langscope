@@ -86,7 +86,7 @@ A transição e o footer compartilham **um único fundo contínuo**. O azul surg
 
 O Canvas estende estrelas e linhas orbitais pela chegada. Ele é desenhado sob demanda, tem limite de 2 milhões de pixels de backing store e não executa um loop de animação. A atmosfera usa uma animação CSS suave, pausada fora da região e em abas ocultas; `prefers-reduced-motion` desativa a animação.
 
-No desktop, o retorno ao topo é texto e seta sem placa de fundo. No mobile, é uma seta em círculo `#151515`, igual ao fundo do site. A versão fica abaixo do GitHub, sem badge. A navegação usa a lógica existente de `app.js`, preservando a visualização ativa ao voltar ao topo.
+No desktop e no mobile, o retorno ao topo é uma seta em círculo `#151515`, igual ao fundo do site, com nome acessível para leitores de tela. A versão fica abaixo da descrição, sem badge. A navegação usa a lógica existente de `app.js`, preservando a visualização ativa ao voltar ao topo.
 
 Prévia opcional, sem instalação de pacotes:
 
