@@ -10,6 +10,10 @@
   <link rel="stylesheet" href="./styles.css">
   <link rel="stylesheet" href="./footer.css">
   <link rel="stylesheet" href="./interpretation.css">
+  <link rel="stylesheet" href="./heroes/hero.css">
+  <link rel="stylesheet" href="./page-transition.css">
+  <script defer src="./heroes/hero-engine.js"></script>
+  <script defer src="./page-transition.js"></script>
   <script defer src="./app.js"></script>
   <script defer src="./footer-scene.js"></script>
   <script defer src="./interpretation.js"></script>
@@ -32,12 +36,14 @@
     <main>
       <section id="ranking-view" class="app-view" aria-labelledby="ranking-title">
         <div class="hero hero--ranking" aria-labelledby="ranking-hero-title">
+          <div id="ranking-hero-art" class="hero-art" aria-hidden="true"></div>
           <div class="hero-content">
             <h1 id="ranking-hero-title" class="hero-title"><span class="hero-muted">Afinal de contas,</span> qual linguagem aprender primeiro?</h1>
-            <p class="hero-description">Se você tá perdido, comece explorando as 22 principais linguagens de programação por sua dificuldade e uso mercadológico. Depois, escolha duas linguagens pra comparar sua complexidade, com exemplos reais.</p>
+            <p class="hero-description">Comece explorando as 22 principais linguagens de programação pela sua dificuldade e uso mercadológico.</p>
           </div>
         </div>
-        <div class="section-bar" id="ranking-tools"><h2 id="ranking-title">Ranking</h2><span class="result-count" id="results-count" aria-live="polite"></span></div>
+        <div class="workspace-panel ranking-panel">
+        <div class="section-bar sr-only" id="ranking-tools"><h2 id="ranking-title">Ranking</h2><span class="result-count" id="results-count" aria-live="polite"></span></div>
         <div class="filters" role="search" aria-label="Filtros do ranking">
           <label class="search-field">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg>
@@ -64,6 +70,7 @@
             <tbody id="rankings-body"></tbody>
           </table>
           <div id="empty-state" class="empty-state" hidden><span>Nenhuma linguagem encontrada.</span><button type="button" id="clear-filters">Limpar filtros</button></div>
+        </div>
         </div>
 
         <section class="explanation explanation--cards" aria-labelledby="interpret-title">
@@ -97,19 +104,21 @@
         </section>
       </section>
 
-      <section id="lab-view" class="app-view" aria-labelledby="lab-title" hidden>
+      <section id="lab-view" class="app-view" aria-labelledby="comparison-hero-title" hidden>
         <div class="hero hero--comparison" aria-labelledby="comparison-hero-title">
+          <div id="comparison-hero-art" class="hero-art" aria-hidden="true"></div>
           <div class="hero-content">
-            <h1 id="comparison-hero-title" class="hero-title"><span class="hero-muted">Qual faz mais</span> sentido pra você?</h1>
+            <h1 id="comparison-hero-title" class="hero-title"><span class="hero-muted">Qual faz mais</span><br class="desktop-line-break"> sentido pra você?</h1>
             <p class="hero-description">Escolha duas linguagens e compare lado a lado sua dificuldade, uso mercadológico e exemplos reais de código. Assim fica mais fácil entender as diferenças antes de decidir por onde começar.</p>
           </div>
         </div>
-        <div class="section-bar lab-heading" id="comparison-tools"><h2 id="lab-title">Comparação</h2><span class="formula" aria-label="Exemplo de dois mais dois igual a quatro">2 + 2 → 4</span></div>
+        <div class="workspace-panel comparison-panel">
         <div class="compare-grid">
           <article class="compare-panel" data-side="left"><div class="compare-content" id="compare-left"></div></article>
           <article class="compare-panel" data-side="right"><div class="compare-content" id="compare-right"></div></article>
         </div>
         <p class="lab-disclaimer">As saídas são exemplos esperados; o código não é executado aqui. Alguns exemplos precisam de ambientes específicos.</p>
+        </div>
         <section class="explanation explanation--cards" aria-labelledby="interpret-title-lab">
           <div class="explanation-head">
             <h2 id="interpret-title-lab">Como interpretar esses dados</h2>
@@ -161,7 +170,7 @@
         <div class="site-footer__information">
           <div class="site-footer__intro">
             <p class="site-footer__description">22 linguagens por uso e dificuldade.<span>Compare códigos lado a lado.</span></p>
-            <span class="site-footer__version">v0.4</span>
+            <span class="site-footer__version">v0.15</span>
           </div>
           <nav class="site-footer__navigation" aria-label="Links do rodapé">
             <div class="site-footer__link-group">

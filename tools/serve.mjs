@@ -18,4 +18,4 @@ http.createServer(async(req,res)=>{
   }
   res.writeHead(200,headers).end(body);
  }catch{res.writeHead(404).end('Not found');}
-}).listen(port,'0.0.0.0',()=>console.log(`langscope preview on ${port}`));
+}).listen(port,'127.0.0.1',()=>console.log(`langscope preview on http://127.0.0.1:${port}`));

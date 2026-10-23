@@ -42,7 +42,7 @@ const escapeHtml = text => String(text).replace(/[&<>"']/g,char=>({'&':'&amp;','
 const ICON_NAMES = {py:'python',ruby:'ruby',lua:'lua',gd:'godot',js:'javascript',php:'php',r:'r',bash:'bash',ps:'powershell',ts:'typescript',go:'go',dart:'dart',cs:'csharp',kt:'kotlin',java:'java',swift:'swift',c:'c',hs:'haskell',rs:'rust',cpp:'cplusplus'};
 function logoMarkup(item){
   const alias=ICON_NAMES[item.id];
-  const src=alias?`https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${alias}/${alias}-original.svg`:`./icons/${item.id==='asm'?'assembly':'sql'}.svg`;
+  const src=alias?`https://cdn.jsdelivr.net/gh/devicons/devicon@6a37858047b0e8d9c9c0e68f4a071fc410652e89/icons/${alias}/${alias}-original.svg`:`./icons/${item.id==='asm'?'assembly':'sql'}.svg`;
   return `<span class="lang-mark" aria-hidden="true"><img src="${src}" alt="" loading="lazy" decoding="async"><span class="fallback-mark">${escapeHtml(item.symbol)}</span></span>`;
 }
 // A fallback inicial permanece visível até a imagem carregar. Se falhar, exibe a sigla.
@@ -63,12 +63,32 @@ selected.right=findLang(selected.right).id;
 let activeView = 'ranking';
 let toastTimeout;
 let openDropdown = null;
+// Keep the supplied artwork engine independent of the site's layout and navigation.
+// Each view is created on first visit, then paused while another view is active.
+const heroControllers = new Map();
+function syncHero(view){
+  if(!window.LangscopeHero)return;
+  if(!heroControllers.has(view)){
+    const section=view==='lab'?'comparison':'ranking';
+    const stage=document.getElementById(`${section}-hero-art`);
+    stage.addEventListener('hero:ready',event=>{
+      stage.dataset.heroProfile=event.detail.id;
+      stage.dataset.heroStatus='ready';
+    });
+    stage.addEventListener('hero:error',()=>{stage.dataset.heroStatus='fallback';});
+    heroControllers.set(view,LangscopeHero.responsive(stage,section));
+  }
+  for(const [name,controller] of heroControllers){
+    controller[name===view?'resume':'pause']();
+  }
+}
 
-function showView(view,updateHash=true){
+function commitView(view,scrollTop=false){
   closeDropdown();
   activeView = view==='lab'?'lab':'ranking';
   $('#ranking-view').hidden=activeView!=='ranking';
   $('#lab-view').hidden=activeView!=='lab';
+  syncHero(activeView);
   $$('.view-tab').forEach(btn=>{
     const active=btn.dataset.view===activeView;
     btn.classList.toggle('is-active',active);
@@ -79,7 +99,57 @@ function showView(view,updateHash=true){
     else link.removeAttribute('aria-current');
   });
   if(activeView==='lab')renderCompare();
-  if(updateHash){const hash=activeView==='lab'?'#comparar':'#ranking';if(location.hash!==hash)location.hash=hash;window.scrollTo(0,0);}
+  if(scrollTop)window.scrollTo({top:0,left:0,behavior:'instant'});
+}
+
+function waitForHero(view){
+  const section=view==='lab'?'comparison':'ranking';
+  const stage=document.getElementById(`${section}-hero-art`);
+  const profile=`${section}-${matchMedia('(max-width: 767px)').matches?'mobile':'desktop'}`;
+  if(!window.LangscopeHero||stage.dataset.heroProfile===profile||stage.dataset.heroStatus==='fallback')return;
+  return new Promise(resolve=>{
+    const done=()=>{clearTimeout(timeout);stage.removeEventListener('hero:ready',ready);stage.removeEventListener('hero:error',done);resolve();};
+    const ready=event=>{if(event.detail.id===profile)done();};
+    const timeout=setTimeout(done,150);
+    stage.addEventListener('hero:ready',ready);stage.addEventListener('hero:error',done);
+  });
+}
+
+let requestedView=null,navigationTask=null;
+function showView(view,updateHash=true){
+  const target=view==='lab'?'lab':'ranking';
+  if(updateHash){
+    const hash=target==='lab'?'#comparar':'#ranking';
+    if(location.hash!==hash)history.pushState(null,'',hash);
+  }
+  requestedView={view:target,scrollTop:updateHash};
+  if(navigationTask)return navigationTask;
+  navigationTask=Promise.resolve().then(async()=>{
+    // Coalesce history/keyboard navigation during an effect and honor the latest route.
+    while(requestedView){
+      const request=requestedView;requestedView=null;
+      if(request.view===activeView){
+        if(request.scrollTop)window.scrollTo({top:0,left:0,behavior:'instant'});
+        continue;
+      }
+      closeDropdown();
+      const focusOrigin=document.activeElement;
+      const moveFocus=focusOrigin.closest('.app-view,[data-footer-view]');
+      const change=()=>{
+        // A Back/Forward action during cover wins before the next view is revealed.
+        const next=requestedView||request;requestedView=null;
+        commitView(next.view,true);return waitForHero(next.view);
+      };
+      if(window.LangscopeTransition)await LangscopeTransition.run(change);else await change();
+      if(moveFocus){
+        const heading=document.querySelector(`#${activeView==='lab'?'lab':'ranking'}-view h1`);
+        heading.tabIndex=-1;heading.focus({preventScroll:true});
+      }else if(focusOrigin.isConnected&&focusOrigin.closest('.topbar')){
+        focusOrigin.focus({preventScroll:true});
+      }
+    }
+  }).finally(()=>{navigationTask=null;});
+  return navigationTask;
 }
 
 function sortedLanguages(){
@@ -151,7 +221,7 @@ function alignDescriptions(){
   if($('#lab-view').hidden)return;
   const descriptions=$$('#lab-view .description');
   descriptions.forEach(el=>el.style.height='auto');
-  if(window.innerWidth<=700)return;
+  if(window.innerWidth<=767)return;
   const required=Math.max(...descriptions.map(el=>el.scrollHeight));
   descriptions.forEach(el=>el.style.height=`${required}px`);
 }
@@ -297,6 +367,7 @@ async function copyCode(side){
 
 // Eventos, sem bibliotecas ou build.
 $$('.view-tab').forEach(tab=>tab.addEventListener('click',()=>showView(tab.dataset.view)));
+$('.brand').addEventListener('click',event=>{event.preventDefault();showView('ranking');});
 // Footer navigation uses the same SPA state as the header tabs (no page reload).
 $$('[data-footer-view]').forEach(link=>link.addEventListener('click',event=>{
   event.preventDefault();
@@ -327,9 +398,9 @@ $('#lab-view').addEventListener('click',event=>{
   const button=event.target.closest('[data-copy]');if(button)copyCode(button.dataset.copy);
 });
 window.addEventListener('hashchange',()=>showView(location.hash==='#comparar'?'lab':'ranking',false));
-window.addEventListener('keydown',event=>{
+window.addEventListener('keydown',async event=>{
   if(event.key==='/'&&!event.ctrlKey&&!event.metaKey&&!event.altKey&&!['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName)&&!document.activeElement.isContentEditable){
-    event.preventDefault();showView('ranking');$('#search').focus();
+    event.preventDefault();await showView('ranking');$('#search').focus();
   }
 });
 
@@ -337,4 +408,4 @@ $('#sort').value=['easy','hard','popular','least','name'].includes(readStore('la
 $('#area').value=['all','IA e dados','Backend','Web','Automação','Mobile','Sistemas','Games','Pesquisa'].includes(readStore('langscope:area','all'))?readStore('langscope:area','all'):'all';
 $$('.filters select').forEach(enhanceSelect);
 renderRanking();
-showView(location.hash==='#comparar'?'lab':'ranking',false);
+commitView(location.hash==='#comparar'?'lab':'ranking',false);

@@ -1,0 +1,28 @@
+# Dependencies and generated files
+node_modules/
+/dist/
+/output/
+.wrangler/
+*.log
+*.zip
+
+# Local credentials and editor settings
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.DS_Store
+.idea/
+.vscode/
+
+# Agent instructions and working notes
+AGENTS.md
+CLAUDE.md
+.agents/
+.codex/
+/.reference/
+/HERO-INTEGRACAO.md
+/TRANSICOES.md
+/design-qa.md
+/tools/vectorize-footer.py
