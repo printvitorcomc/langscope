@@ -131,7 +131,7 @@ svg{display:block}strong{font-weight:600}
   .col-language{width:43%}.col-num{width:19%}
   .metric-bar{display:none}.metric-cell{display:inline-flex;gap:0}.lang-cell{gap:9px}.rank-index{display:none}
   .compare-grid{grid-template-columns:1fr;gap:10px}.code-card{height:168px}.description{height:auto;min-height:0;max-height:none;margin-bottom:8px}
-  .interpret-grid{grid-template-columns:1fr;gap:13px}.explainer-note{margin-top:15px}
+  .explanation-head{grid-template-columns:1fr;gap:12px}.explanation-cards{grid-template-columns:1fr;gap:14px}
   .hero{min-height:71vh;padding:46px 20px 34px;margin-bottom:28px}
   .hero--ranking::before{background-image:url("./assets/ranking-mobile.webp");background-position:right 53%}
   .hero--comparison::before{background-image:url("./assets/comparison-mobile.webp");background-position:right 48%}
@@ -157,7 +157,7 @@ svg{display:block}strong{font-weight:600}
   .lang-cell{gap:8px}.lang-mark{height:26px;width:26px}.lang-mark img{height:18px;width:18px;inset:4px}
   .lang-mark .fallback-mark{font-size:9px}.lang-name-button{font-size:12px}.lang-area{font-size:10px}
   .score,.usage-rating{font-size:12px}.usage-note{font-size:11px}
-  .header-unit{font-size:9px}.explanation{margin-top:29px;padding-top:24px}.explanation h2{font-size:16px;margin-bottom:16px}
+  .header-unit{font-size:9px}.explanation{margin-top:30px;padding-top:24px}.explanation h2{font-size:16px}.explanation-eyebrow{margin-bottom:8px}.explanation-card-body{padding:14px 14px 16px}
   .compare-content{padding:13px}.compare-top{margin-bottom:14px}.compare-identity .select-wrap select{font-size:12px}
   .footer{min-height:71px}
 }
@@ -181,3 +181,32 @@ svg{display:block}strong{font-weight:600}
 
 /* Compact popularity label where the table columns become narrow. */
 @media(max-width:430px){.popularity-long{display:none}.popularity-short{display:inline}}
+
+/* Data interpretation: an editorial three-card section shared by Ranking and Comparação. */
+.explanation--cards{border-top:1px solid var(--line);margin-top:38px;padding:38px 0 14px}
+.explanation--cards .explanation-head{display:grid;grid-template-columns:minmax(0,315px) minmax(0,1fr);align-items:end;gap:clamp(18px,3vw,42px);margin-bottom:25px}
+.explanation--cards .explanation-eyebrow{margin:0 0 9px;color:var(--faint);font:10px/1.2 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.12em}
+.explanation--cards h2{font-size:clamp(17px,2vw,22px);font-weight:500;letter-spacing:-.035em;line-height:1.15;margin:0}
+.explanation--cards .explanation-intro{max-width:710px;margin:0;color:var(--muted);font-size:12px;line-height:1.72}
+.explanation--cards .explanation-intro a{color:#d3d3cf;text-decoration:underline;text-decoration-color:#666;text-underline-offset:3px}
+.explanation--cards .explanation-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.explanation--cards .explanation-card{min-width:0;border:1px solid var(--line);background:#191919;display:flex;flex-direction:column}
+.explanation--cards .explanation-media{overflow:hidden;aspect-ratio:1.2;background:#0b0b0b;border-bottom:1px solid var(--subtle-line)}
+.explanation--cards .explanation-media img{width:100%;height:100%;object-fit:cover;display:block}
+.explanation--cards .explanation-card-body{padding:18px 17px 21px;display:grid;grid-template-columns:26px minmax(0,1fr);column-gap:10px;align-content:start}
+.explanation--cards .explanation-card-index{grid-row:1 / 3;font:10px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--faint)}
+.explanation--cards .explanation-card h3{margin:0 0 8px;font-size:14px;font-weight:550;letter-spacing:-.02em;line-height:1.35}
+.explanation--cards .explanation-card p{grid-column:2;margin:0;color:var(--muted);font-size:12px;line-height:1.65}
+@media(max-width:700px){
+  .explanation--cards .explanation-head{grid-template-columns:1fr;gap:13px;margin-bottom:21px}
+  .explanation--cards .explanation-cards{grid-template-columns:1fr;gap:12px}
+  .explanation--cards .explanation-media{aspect-ratio:1.75}
+  .explanation--cards .explanation-card-body{padding:16px 15px 18px}
+}
+@media(max-width:430px){
+  .explanation--cards{margin-top:30px;padding-top:29px}
+  .explanation--cards h2{font-size:18px}
+  .explanation--cards .explanation-media{aspect-ratio:1.8}
+  .explanation--cards .explanation-card h3{font-size:13px}
+  .explanation--cards .explanation-card p{font-size:11.5px}
+}

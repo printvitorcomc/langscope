@@ -13,6 +13,7 @@ Mini-app estático, mobile-first, com **22 linguagens de programação**: rankin
 - Ranking com 22 linhas, sem limite de altura nem paginação no mobile.
 - Visual escuro, responsivo, sem dependências de framework ou etapa de compilação.
 - Duas heroes em largura total, com cerca de 70% da altura da tela, fundos abstratos próprios para desktop e mobile e textos HTML acessíveis.
+- Seção ilustrada **Como interpretar os dados** em Ranking e Comparação, com três cards que distinguem a pesquisa da Stack Overflow, a estimativa de dificuldade e as métricas de uso.
 
 ## Execução local
 
@@ -58,7 +59,7 @@ styles.css         visual e responsividade
 app.js             dados, ranking, filtros e comparação
 favicon.svg        ícone da aba
 icons/             símbolos genéricos para SQL e Assembly
-assets/            4 fundos WebP sem texto para as duas heroes
+assets/            4 fundos WebP para as heroes + 3 ilustrações WebP explicativas
 README.md          documentação
 ```
 
