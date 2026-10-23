@@ -7,7 +7,7 @@ Mini-app estático, mobile-first, com **22 linguagens de programação**: rankin
 - Ordenação por dificuldade, uso e nome; busca e filtro por área.
 - Tabela com linguagem, dificuldade, uso (%) e popularidade (índice relativo de 0 a 10).
 - Comparação de duas linguagens para `2 + 2`, descrição acessível acima do código, saída esperada, cópia do código e avaliação da dificuldade.
-- Caixas de código com altura estável e rolagem interna para preservar o alinhamento entre os dois painéis.
+- Caixas de código compactas, com altura estável, rolagem interna e indicador persistente quando há mais linhas. Saídas compactas e sem notas técnicas adicionais.
 - Logotipos das linguagens, navegação por abas e seleções persistidas localmente.
 - Menus personalizados, ancorados abaixo dos campos, com rolagem touch e navegação por teclado.
 - Ranking com 22 linhas, sem limite de altura nem paginação no mobile.
