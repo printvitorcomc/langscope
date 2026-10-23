@@ -1,0 +1,7 @@
+# Créditos e referências
+
+- **Dados de uso:** Stack Exchange Inc. (2026), [Stack Overflow Developer Survey — Programming, scripting, and markup languages](https://survey.stackoverflow.co/2026/technology/data/languages), sob [ODbL 1.0](https://opendatacommons.org/licenses/odbl/1-0/). O site seleciona 22 linguagens e calcula uma escala relativa de popularidade. As notas de dificuldade são estimativas próprias e não fazem parte da pesquisa.
+- **Logotipos:** [Devicon](https://github.com/devicons/devicon), servido como imagens pelo jsDelivr a partir de uma revisão fixa. [Licença MIT do catálogo](https://github.com/devicons/devicon/blob/master/LICENSE); nomes e marcas pertencem aos respectivos titulares. SQL e Assembly usam símbolos genéricos locais.
+- **Transição entre telas:** implementação local inspirada no exemplo About de [Creating Custom Page Transitions in Astro with Barba.js and GSAP](https://tympanus.net/codrops/2026/04/08/creating-custom-page-transitions-in-astro-with-barba-js-and-gsap/), com [código de referência](https://github.com/Ibaliqbal/codrops-barbajs-page-transition). O ruído procedural referencia a [coleção de funções de Patricio Gonzalez Vivo](https://gist.github.com/patriciogonzalezvivo/670c22f3966e662d2f83). O projeto não inclui Barba.js, GSAP ou Three.js.
+
+As artes e composições foram fornecidas para este projeto e não recebem uma licença de reutilização por meio deste arquivo. Nenhuma licença geral de código aberto foi definida para o langscope.

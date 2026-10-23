@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#151515">
+  <meta name="description" content="Explore 22 linguagens de programação por dificuldade, uso e exemplos de código lado a lado.">
+  <title>langscope — Ranking e Comparação</title>
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./footer.css">
+  <link rel="stylesheet" href="./interpretation.css">
+  <link rel="stylesheet" href="./heroes/hero.css">
+  <link rel="stylesheet" href="./page-transition.css">
+  <script defer src="./heroes/hero-engine.js"></script>
+  <script defer src="./page-transition.js"></script>
+  <script defer src="./app.js"></script>
+  <script defer src="./footer-scene.js"></script>
+  <script defer src="./interpretation.js"></script>
+</head>
+<body id="top">
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="#ranking" aria-label="langscope, ranking">langscope<span class="brand-period" aria-hidden="true">.</span></a>
+      <nav class="view-tabs" aria-label="Navegação principal">
+        <button type="button" class="view-tab is-active" data-view="ranking" aria-current="page">Ranking</button>
+        <button type="button" class="view-tab" data-view="lab">Comparação</button>
+      </nav>
+      <a class="github-link" href="https://github.com/printvitorcomc/langscope" target="_blank" rel="noopener noreferrer" aria-label="Abrir repositório no GitHub (nova aba)" title="Repositório GitHub">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 .9a11.1 11.1 0 0 0-3.51 21.63c.55.1.75-.24.75-.53v-2.04c-3.05.66-3.69-1.29-3.69-1.29-.5-1.26-1.22-1.6-1.22-1.6-.99-.68.08-.67.08-.67 1.1.08 1.67 1.13 1.67 1.13.97 1.66 2.55 1.18 3.17.9.1-.7.38-1.18.69-1.45-2.44-.28-5.01-1.22-5.01-5.44 0-1.2.43-2.19 1.13-2.96-.11-.28-.49-1.4.11-2.91 0 0 .92-.3 3.02 1.13a10.5 10.5 0 0 1 5.5 0c2.1-1.43 3.02-1.13 3.02-1.13.6 1.51.22 2.63.11 2.91.71.77 1.12 1.76 1.12 2.96 0 4.23-2.57 5.16-5.02 5.43.39.34.74 1 .74 2.02V22c0 .3.2.64.76.53A11.1 11.1 0 0 0 12 .9Z"/></svg>
+        <span>GitHub</span>
+        <svg class="external-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+      </a>
+    </header>
+
+    <main>
+      <section id="ranking-view" class="app-view" aria-labelledby="ranking-title">
+        <div class="hero hero--ranking" aria-labelledby="ranking-hero-title">
+          <div id="ranking-hero-art" class="hero-art" aria-hidden="true"></div>
+          <div class="hero-content">
+            <h1 id="ranking-hero-title" class="hero-title"><span class="hero-muted">Afinal de contas,</span> qual linguagem aprender primeiro?</h1>
+            <p class="hero-description">Comece explorando as 22 principais linguagens de programação pela sua dificuldade e uso mercadológico.</p>
+          </div>
+        </div>
+        <div class="workspace-panel ranking-panel">
+        <div class="section-bar sr-only" id="ranking-tools"><h2 id="ranking-title">Ranking</h2><span class="result-count" id="results-count" aria-live="polite"></span></div>
+        <div class="filters" role="search" aria-label="Filtros do ranking">
+          <label class="search-field">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg>
+            <span class="sr-only">Buscar linguagem</span>
+            <input id="search" type="search" placeholder="Buscar linguagem" autocomplete="off" spellcheck="false">
+            <kbd class="search-kbd" aria-hidden="true">/</kbd>
+          </label>
+          <div class="select-wrap"><span class="sr-only">Área de aplicação</span>
+            <select id="area"><option value="all">Todas as áreas</option><option>IA e dados</option><option>Backend</option><option>Web</option><option>Automação</option><option>Mobile</option><option>Sistemas</option><option>Games</option><option>Pesquisa</option></select>
+          </div>
+          <div class="select-wrap"><span class="sr-only">Ordenação</span>
+            <select id="sort"><option value="easy">Menor dificuldade</option><option value="hard">Maior dificuldade</option><option value="popular">Maior uso</option><option value="least">Menor uso</option><option value="name">Ordem alfabética</option></select>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <table class="language-table" aria-label="Ranking de linguagens de programação">
+            <thead><tr>
+              <th scope="col" class="col-language">Linguagem</th>
+              <th scope="col" class="col-num"><abbr title="Dificuldade estimada para iniciantes, de 1 a 10"><span class="full-label">Dificuldade</span><span class="short-label">Dific.</span></abbr></th>
+              <th scope="col" class="col-num"><abbr title="Percentual de respondentes que utilizaram a tecnologia">Uso</abbr></th>
+              <th scope="col" class="col-num"><abbr title="Uso convertido para uma escala de 0 a 10"><span class="popularity-long">Popularidade</span><span class="popularity-short">Popular.</span></abbr></th>
+            </tr></thead>
+            <tbody id="rankings-body"></tbody>
+          </table>
+          <div id="empty-state" class="empty-state" hidden><span>Nenhuma linguagem encontrada.</span><button type="button" id="clear-filters">Limpar filtros</button></div>
+        </div>
+        </div>
+
+        <section class="explanation explanation--cards" aria-labelledby="interpret-title">
+          <div class="explanation-head">
+            <h2 id="interpret-title">Como interpretar esses dados</h2>
+            <p class="explanation-intro">Os dados de uso vêm da <a href="https://survey.stackoverflow.co/2026/technology/data/languages" target="_blank" rel="noopener noreferrer">Stack Overflow Developer Survey 2026 ↗</a>, com 14.099 respostas à pergunta sobre linguagens. A dificuldade é uma estimativa educacional independente dessa pesquisa.</p>
+          </div>
+          <div class="explanation-cards">
+            <article class="explanation-card">
+              <div class="explanation-media"><img src="./assets/interpret-survey.webp" alt="" width="1448" height="1086" loading="lazy" decoding="async"></div>
+              <div class="explanation-card-body">
+                <h3>Pesquisa de referência</h3>
+                <p>A pesquisa mostra quais linguagens os participantes usaram no último ano. Ela indica adoção entre desenvolvedores, não quantidade de vagas.</p>
+              </div>
+            </article>
+            <article class="explanation-card">
+              <div class="explanation-media"><img src="./assets/interpret-difficulty.webp" alt="" width="1448" height="1086" loading="lazy" decoding="async"></div>
+              <div class="explanation-card-body">
+                <h3>Dificuldade</h3>
+                <p>Nota estimada para iniciantes, considerando conceitos (35%), sintaxe (30%), complexidade técnica (20%) e ferramentas (15%). É um guia, não uma medida científica. SQL fica sem nota.</p>
+              </div>
+            </article>
+            <article class="explanation-card">
+              <div class="explanation-media"><img src="./assets/interpret-comparison.webp" alt="" width="1448" height="1086" loading="lazy" decoding="async"></div>
+              <div class="explanation-card-body">
+                <h3>Uso e popularidade</h3>
+                <p>Uso é o percentual de participantes que utilizaram cada linguagem. Popularidade transforma esse valor numa nota de 0 a 10, com JavaScript como referência.</p>
+              </div>
+            </article>
+          </div>
+        </section>
+      </section>
+
+      <section id="lab-view" class="app-view" aria-labelledby="comparison-hero-title" hidden>
+        <div class="hero hero--comparison" aria-labelledby="comparison-hero-title">
+          <div id="comparison-hero-art" class="hero-art" aria-hidden="true"></div>
+          <div class="hero-content">
+            <h1 id="comparison-hero-title" class="hero-title"><span class="hero-muted">Qual faz mais</span><br class="desktop-line-break"> sentido pra você?</h1>
+            <p class="hero-description">Escolha duas linguagens e compare lado a lado sua dificuldade, uso mercadológico e exemplos reais de código. Assim fica mais fácil entender as diferenças antes de decidir por onde começar.</p>
+          </div>
+        </div>
+        <div class="workspace-panel comparison-panel">
+        <div class="compare-grid">
+          <article class="compare-panel" data-side="left"><div class="compare-content" id="compare-left"></div></article>
+          <article class="compare-panel" data-side="right"><div class="compare-content" id="compare-right"></div></article>
+        </div>
+        <p class="lab-disclaimer">As saídas são exemplos esperados; o código não é executado aqui. Alguns exemplos precisam de ambientes específicos.</p>
+        </div>
+        <section class="explanation explanation--cards" aria-labelledby="interpret-title-lab">
+          <div class="explanation-head">
+            <h2 id="interpret-title-lab">Como interpretar esses dados</h2>
+            <p class="explanation-intro">Os dados de uso vêm da <a href="https://survey.stackoverflow.co/2026/technology/data/languages" target="_blank" rel="noopener noreferrer">Stack Overflow Developer Survey 2026 ↗</a>, com 14.099 respostas à pergunta sobre linguagens. A dificuldade é uma estimativa educacional independente dessa pesquisa.</p>
+          </div>
+          <div class="explanation-cards">
+            <article class="explanation-card">
+              <div class="explanation-media"><img src="./assets/interpret-survey.webp" alt="" width="1448" height="1086" loading="lazy" decoding="async"></div>
+              <div class="explanation-card-body">
+                <h3>Pesquisa de referência</h3>
+                <p>A pesquisa mostra quais linguagens os participantes usaram no último ano. Ela indica adoção entre desenvolvedores, não quantidade de vagas.</p>
+              </div>
+            </article>
+            <article class="explanation-card">
+              <div class="explanation-media"><img src="./assets/interpret-difficulty.webp" alt="" width="1448" height="1086" loading="lazy" decoding="async"></div>
+              <div class="explanation-card-body">
+                <h3>Dificuldade</h3>
+                <p>Nota estimada para iniciantes, considerando conceitos (35%), sintaxe (30%), complexidade técnica (20%) e ferramentas (15%). É um guia, não uma medida científica. SQL fica sem nota.</p>
+              </div>
+            </article>
+            <article class="explanation-card">
+              <div class="explanation-media"><img src="./assets/interpret-comparison.webp" alt="" width="1448" height="1086" loading="lazy" decoding="async"></div>
+              <div class="explanation-card-body">
+                <h3>Uso e popularidade</h3>
+                <p>Uso é o percentual de participantes que utilizaram cada linguagem. Popularidade transforma esse valor numa nota de 0 a 10, com JavaScript como referência.</p>
+              </div>
+            </article>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <!-- One continuous sky: the transition and footer share a single background. -->
+  <div class="footer-scene">
+    <canvas class="footer-scene__sky" aria-hidden="true"></canvas>
+    <div class="footer-scene__atmosphere" aria-hidden="true"></div>
+    <div class="footer-arrival" aria-hidden="true"></div>
+
+  <!-- Shared footer for both SPA views. The artwork is decorative, not a content image. -->
+  <footer class="site-footer" aria-label="Rodapé do langscope">
+    <picture class="site-footer__art" aria-hidden="true">
+      <source media="(max-width: 700px), (max-aspect-ratio: 4/5)" srcset="./assets/celestial-cowboy-mobile.svg" type="image/svg+xml">
+      <img src="./assets/celestial-cowboy-desktop.svg" alt="" loading="lazy" decoding="async" width="1444" height="1089">
+    </picture>
+    <div class="site-footer__content">
+      <div class="site-footer__sky">
+        <div class="site-footer__wordmark" aria-label="langscope">langscope<span aria-hidden="true">.</span></div>
+        <div class="site-footer__information">
+          <div class="site-footer__intro">
+            <p class="site-footer__description">22 linguagens por uso e dificuldade.<span>Compare códigos lado a lado.</span></p>
+            <span class="site-footer__version">v0.15</span>
+          </div>
+          <nav class="site-footer__navigation" aria-label="Links do rodapé">
+            <div class="site-footer__link-group">
+              <span class="site-footer__eyebrow">EXPLORAR</span>
+              <a href="#ranking" data-footer-view="ranking" class="site-footer__link">Ranking <span aria-hidden="true">↗</span></a>
+              <a href="#comparar" data-footer-view="lab" class="site-footer__link">Comparação <span aria-hidden="true">↗</span></a>
+            </div>
+            <div class="site-footer__link-group">
+              <span class="site-footer__eyebrow">PROJETO</span>
+              <a href="https://vitorcomc.com.br" target="_blank" rel="noopener noreferrer" class="site-footer__link">vitorcomc.com.br <span aria-hidden="true">↗</span></a>
+              <a href="https://github.com/printvitorcomc/langscope" target="_blank" rel="noopener noreferrer" class="site-footer__link">GitHub <span aria-hidden="true">↗</span></a>
+            </div>
+          </nav>
+        </div>
+      </div>
+      <div class="site-footer__ground">
+        <button type="button" class="site-footer__to-top" id="back-to-top" aria-label="Voltar ao topo da página">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20V4M5 11l7-7 7 7"/></svg>
+        </button>
+      </div>
+    </div>
+  </footer>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+</body>
+</html>

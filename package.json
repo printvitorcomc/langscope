@@ -1,0 +1,10 @@
+{
+  "name": "langscope",
+  "private": true,
+  "version": "0.15.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node tools/serve.mjs",
+    "build": "node tools/build.mjs"
+  }
+}

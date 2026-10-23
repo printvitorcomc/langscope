@@ -1,0 +1,225 @@
+/* Site integration only. hero-engine.js and the four coordinate files are unchanged. */
+.shell {
+  max-width: 1280px;
+  padding-inline: 40px;
+  position: relative;
+}
+
+.topbar {
+  position: absolute;
+  z-index: 10;
+  inset: 42px 40px auto;
+  min-height: 40px;
+  padding: 0;
+  border: 0;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 24px;
+}
+
+.brand { font-size: 23px; }
+.view-tabs {
+  grid-column: 2;
+  grid-row: 1;
+  height: auto;
+  margin: 0;
+  gap: 8px;
+}
+.view-tab {
+  min-width: 132px;
+  min-height: 40px;
+  padding: 7px 16px;
+  border: 1px solid #c8c8c6;
+  border-radius: 10px;
+  background: transparent;
+  color: #d0d0cd;
+  font-size: 17px;
+  line-height: 1.2;
+  transition: background .15s, color .15s, border-color .15s;
+}
+.view-tab:hover { background: #ffffff12; color: #fff; }
+.view-tab.is-active {
+  background: #d6d6d4;
+  border-color: #d6d6d4;
+  color: #111;
+}
+.github-link {
+  grid-column: 3;
+  grid-row: 1;
+  padding: 8px 0;
+  gap: 8px;
+  font-size: 16px;
+}
+.github-link > svg:first-child { width: 18px; height: 18px; }
+.github-link .external-arrow { display: none; }
+
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: clamp(600px, 74svh, 820px);
+  width: 100vw;
+  margin: 0 calc(50% - 50vw);
+  padding: 160px 40px 0;
+  border: 0;
+  background: transparent;
+  overflow: visible;
+  isolation: isolate;
+}
+.hero::before, .hero::after { content: none; }
+.hero-art {
+  position: absolute;
+  z-index: -1;
+  inset: 0 0 -240px;
+  isolation: isolate;
+  overflow: hidden;
+  background: #090909;
+  background-position: center;
+  background-size: cover;
+  touch-action: pan-y pinch-zoom;
+  -webkit-mask-image: linear-gradient(#000 0%, #000 76%, transparent 100%);
+  mask-image: linear-gradient(#000 0%, #000 76%, transparent 100%);
+}
+/* Existing stills remain visible during loading or if coordinate data is unavailable. */
+.hero--ranking .hero-art { background-image: url('../assets/ranking-desktop.webp'); }
+.hero--comparison .hero-art { background-image: url('../assets/comparison-desktop.webp'); }
+.hero-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 900px;
+  padding: 0;
+  text-align: center;
+}
+.hero-title {
+  max-width: 900px;
+  margin: 0 auto;
+  font-size: clamp(48px, 4.2vw, 68px);
+  line-height: 1.06;
+  letter-spacing: -.045em;
+  text-wrap: balance;
+}
+.hero-muted { color: #aaa; }
+.hero-description {
+  max-width: 590px;
+  margin: 22px auto 0;
+  color: #b6b6b4;
+  font-size: 15px;
+  line-height: 1.7;
+  text-shadow: 0 1px 8px #090909, 0 0 16px #090909;
+}
+.workspace-panel {
+  position: relative;
+  z-index: 2;
+  padding: 30px;
+  border: 1px solid var(--subtle-line);
+  background: var(--bg);
+}
+.ranking-panel .filters { margin-bottom: 20px; }
+.ranking-panel .section-bar { margin: 0; }
+.ranking-panel .table-card { border-top: 0; }
+.comparison-panel { padding-bottom: 0; }
+.comparison-panel .compare-grid { gap: 0; }
+.comparison-panel .compare-panel { border: 0; background: transparent; }
+.comparison-panel .compare-content { padding: 0; }
+.comparison-panel .compare-panel:first-child { padding-inline-end: 24px; }
+.comparison-panel .compare-panel + .compare-panel {
+  border-inline-start: 1px solid var(--line);
+  padding-inline-start: 24px;
+}
+.lab-disclaimer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 66px;
+  margin: 0;
+  padding: 16px 0;
+  text-align: center;
+}
+
+@media (min-width: 768px) and (max-width: 1000px) {
+  .topbar { inset-inline: 32px; }
+  .shell { padding-inline: 32px; }
+  .view-tab { min-width: 118px; }
+  .hero-title { max-width: 760px; }
+  .workspace-panel { padding: 24px; }
+  .ranking-panel .filters { grid-template-columns: minmax(0, 1fr) 150px 160px; }
+}
+
+@media (max-width: 767px) {
+  .shell { padding-inline: 10px; }
+  .topbar {
+    inset: 30px 28px auto;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 18px 10px;
+  }
+  .view-tabs {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    gap: 10px;
+  }
+  .view-tab {
+    min-width: 0;
+    min-height: 34px;
+    padding: 6px 8px;
+    border-radius: 8px;
+    font-size: 16px;
+  }
+  .brand { grid-row: 2; font-size: 20px; }
+  .github-link { grid-column: 2; grid-row: 2; font-size: 16px; padding: 0; }
+  .github-link > svg:first-child { display: block; }
+  .desktop-line-break { display: none; }
+  .hero {
+    min-height: clamp(560px, 69svh, 720px);
+    padding: 130px 38px 10px;
+  }
+  .hero-art { bottom: -200px; }
+  .hero--ranking .hero-art { background-image: url('../assets/ranking-mobile.webp'); }
+  .hero--comparison .hero-art { background-image: url('../assets/comparison-mobile.webp'); }
+  .hero-content { max-width: 520px; text-align: left; }
+  .hero-title {
+    margin: 0;
+    font-size: clamp(36px, 10.3vw, 60px);
+    line-height: 1.04;
+    letter-spacing: -.045em;
+    text-wrap: initial;
+  }
+  .hero--ranking .hero-muted { display: block; }
+  .hero-description {
+    max-width: 470px;
+    margin: 20px 0 0;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .workspace-panel { padding: 20px 17px; }
+  .ranking-panel .filters { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 9px; margin-bottom: 13px; }
+  .ranking-panel .search-field { grid-column: 1 / -1; }
+  .ranking-panel .search-field input { min-height: 43px; }
+  .ranking-panel .dropdown-trigger { min-height: 43px; }
+  .ranking-panel .full-label { display: inline; }
+  .ranking-panel .short-label { display: none; }
+  .ranking-panel .popularity-long { display: none; }
+  .ranking-panel .popularity-short { display: inline; }
+  .comparison-panel { padding-bottom: 0; }
+  .comparison-panel .compare-grid { grid-template-columns: 1fr; }
+  .comparison-panel .compare-panel:first-child { padding-inline-end: 0; }
+  .comparison-panel .compare-panel + .compare-panel {
+    border-inline-start: 0;
+    padding-inline-start: 0;
+    border-block-start: 1px solid var(--line);
+    margin-block-start: 24px;
+    padding-block-start: 24px;
+  }
+}
+
+@media (max-width: 355px) {
+  .topbar { inset-inline: 22px; }
+  .hero { padding-inline: 26px; }
+  .hero-title { font-size: 34px; }
+  .hero-description { font-size: 13px; }
+  .workspace-panel { padding-inline: 12px; }
+  .ranking-panel .full-label { display: none; }
+  .ranking-panel .short-label { display: inline; }
+}
