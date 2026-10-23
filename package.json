@@ -1,0 +1,1 @@
+{"name":"langscope","private":true,"version":"0.4.0","type":"module","scripts":{"dev":"node tools/serve.mjs"}}

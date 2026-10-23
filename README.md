@@ -14,6 +14,7 @@ Mini-app estático, mobile-first, com **22 linguagens de programação**: rankin
 - Visual escuro, responsivo, sem dependências de framework ou etapa de compilação.
 - Duas heroes em largura total, com cerca de 70% da altura da tela, fundos abstratos próprios para desktop e mobile e textos HTML acessíveis.
 - Seção ilustrada **Como interpretar esses dados** em Ranking e Comparação, com três cards que distinguem a pesquisa da Stack Overflow, a estimativa de dificuldade e as métricas de uso.
+- Footer compartilhado de tela cheia, com paisagens vetoriais distintas para desktop e mobile, navegação entre visualizações e retorno ao topo.
 
 ## Execução local
 
@@ -56,11 +57,41 @@ Documentação: [Cloudflare Pages](https://developers.cloudflare.com/pages/frame
 ```
 index.html         marcação e navegação
 styles.css         visual e responsividade
+footer.css         footer e transição contínua
+footer-scene.js    extensão do céu em Canvas, desenhada apenas ao entrar/redimensionar
 app.js             dados, ranking, filtros e comparação
 favicon.svg        ícone da aba
 icons/             símbolos genéricos para SQL e Assembly
-assets/            4 fundos WebP para as heroes + 3 ilustrações WebP explicativas
+assets/            4 fundos WebP das heroes, 3 ilustrações explicativas e 2 paisagens SVG
+tools/             servidor de prévia e ferramenta opcional de vetorização
 README.md          documentação
 ```
 
 Para atualizar linguagens, exemplos, categorias ou critérios, edite o array `LANGUAGES` e os pesos `FACTORS` em `app.js`.
+
+## Footer vetorial
+
+As duas paisagens são **SVGs reais**: contornos Bézier obtidos das referências fornecidas. Não há PNG/WebP, base64, elemento `<image>` ou textura raster embutida nesses SVGs. O navegador baixa somente a composição escolhida pelo `<picture>`: retrato em telas estreitas/verticais; paisagem nas demais.
+
+A composição, a paleta azul e creme, o cavaleiro, o relevo, a vegetação e as estruturas celestes vêm das referências. A vetorização reduz variações muito pequenas de tom e microtextura; não é uma reprodução idêntica pixel a pixel nem uma recuperação de detalhes ausentes nos PNGs. Os contornos escalam sem a grade de pixels da imagem original.
+
+| Arte | SVG sem compressão | Com gzip | WebP anterior |
+| --- | ---: | ---: | ---: |
+| Desktop | 3.55 MB | 617 KB | 723 KB |
+| Mobile | 2.53 MB | 398 KB | 607 KB |
+
+Valores decimais aproximados. Os tamanhos gzip foram medidos localmente. Para obter esse peso de transferência, a hospedagem precisa servir os SVGs com compressão HTTP; sem ela, serão transferidos os tamanhos brutos. O servidor de prévia incluído comprime SVG, HTML, CSS e JavaScript. Não há dependência de Node no site publicado.
+
+A transição e o footer compartilham **um único fundo contínuo**. O azul surge gradualmente do cinza da interface; a transparência dos SVGs permite que o mesmo céu continue atrás da gravura. Não há espelhamento ou emenda entre imagens.
+
+O Canvas estende estrelas e linhas orbitais pela chegada. Ele é desenhado sob demanda, tem limite de 2 milhões de pixels de backing store e não executa um loop de animação. A atmosfera usa uma animação CSS suave, pausada fora da região e em abas ocultas; `prefers-reduced-motion` desativa a animação.
+
+No desktop, o retorno ao topo é texto e seta sem placa de fundo. No mobile, é uma seta em círculo `#151515`, igual ao fundo do site. A versão fica abaixo do GitHub, sem badge. A navegação usa a lógica existente de `app.js`, preservando a visualização ativa ao voltar ao topo.
+
+Prévia opcional, sem instalação de pacotes:
+
+```bash
+npm run dev -- --port 4173
+```
+
+A ferramenta `tools/vectorize-footer.py` é utilizada somente para gerar os SVGs offline; requer Python, Pillow, NumPy e libpotrace. Não é executada no navegador nem no deploy.
