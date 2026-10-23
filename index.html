@@ -141,6 +141,11 @@
 
   <!-- A quiet transition from the application's charcoal UI into the illustrated sky. -->
   <div class="footer-arrival" aria-hidden="true">
+    <!-- The same sky is reflected upward and feathered, so the art begins before the footer seam. -->
+    <picture class="footer-arrival__sky-echo">
+      <source media="(max-width: 700px)" srcset="./assets/celestial-cowboy-mobile.webp" type="image/webp">
+      <img src="./assets/celestial-cowboy-desktop.webp" alt="" loading="lazy" decoding="async" width="1444" height="1089">
+    </picture>
     <span class="footer-arrival__glow"></span>
     <span class="footer-arrival__orbit footer-arrival__orbit--left"></span>
     <span class="footer-arrival__orbit footer-arrival__orbit--right"></span>
@@ -174,7 +179,7 @@
       <div class="site-footer__ground">
         <span class="site-footer__version">LANGSCOPE <span aria-hidden="true">/</span> v0.4</span>
         <button type="button" class="site-footer__to-top" id="back-to-top" aria-label="Voltar ao topo da página">
-          Voltar pra cima
+          <span class="site-footer__to-top-label">Voltar pra cima</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20V4M5 11l7-7 7 7"/></svg>
         </button>
       </div>

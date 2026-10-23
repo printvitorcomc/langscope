@@ -543,3 +543,146 @@ svg{display:block}strong{font-weight:600}
   .site-footer__link, .site-footer__link span,
   .site-footer__to-top, .site-footer__to-top svg { transition: none; }
 }
+
+/* Footer refinement: bigger editorial type, legible ground controls and a
+   feathered reflection that carries the actual sky texture across the seam. */
+.footer-arrival {
+  background: linear-gradient(180deg,
+    #151515 0%, #15171e 14%, #172147 41%, #15316b 68%, #153c8b 100%);
+}
+.footer-arrival__sky-echo {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: clamp(155px, 24svh, 260px);
+  overflow: hidden;
+  pointer-events: none;
+  transform: scaleY(-1);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0,0,0,.98) 8%, rgba(0,0,0,.62) 42%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, rgba(0,0,0,.98) 8%, rgba(0,0,0,.62) 42%, transparent 100%);
+}
+.footer-arrival__sky-echo img {
+  display: block;
+  width: 100%;
+  height: max(100svh, 700px);
+  max-width: none;
+  object-fit: cover;
+  object-position: center bottom;
+}
+.footer-arrival__glow { opacity: .47; }
+/* Fade away the start of the original photo instead of revealing a photo edge.
+   The mirrored sky immediately before it has identical pixels along the seam. */
+.site-footer::before {
+  height: clamp(115px, 19svh, 200px);
+  background: linear-gradient(180deg, #153c8b 0%, rgba(21,60,139,.94) 13%, rgba(21,60,139,.4) 64%, transparent 100%);
+}
+.site-footer__ground {
+  border-top: 0;
+  padding-top: 0;
+}
+.site-footer__version,
+.site-footer__to-top {
+  color: #153c77;
+  background: #fff1d9;
+  border: 1px solid rgba(18,46,104,.22);
+  box-shadow: 0 2px 12px rgba(14,42,93,.12);
+}
+.site-footer__version {
+  display: inline-flex;
+  align-items: center;
+  min-height: 41px;
+  padding: 0 15px;
+  border-radius: 5px;
+  font-weight: 600;
+  letter-spacing: .055em;
+}
+.site-footer__to-top {
+  cursor: pointer;
+  padding: 0 15px 0 18px;
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background-color .2s ease, transform .2s ease;
+}
+.site-footer__to-top:hover {
+  background: #fffaf0;
+  opacity: 1;
+  transform: translateY(-2px);
+}
+.site-footer__to-top:focus-visible {
+  outline: 2px solid #173974;
+  outline-offset: 3px;
+}
+@media (max-width: 700px) {
+  .footer-arrival__sky-echo { height: clamp(150px, 23svh, 210px); }
+  .footer-arrival__sky-echo img { height: max(100svh, 740px); }
+  .site-footer__sky {
+    padding: clamp(42px, 6svh, 70px) 18px 0;
+  }
+  .site-footer__wordmark {
+    max-width: none;
+    font-size: 19vw;
+    letter-spacing: -.09em;
+    line-height: 1;
+  }
+  .site-footer__information {
+    gap: clamp(32px, 5svh, 48px);
+    margin-top: clamp(26px, 4svh, 40px);
+    padding-top: 22px;
+    border-top-color: rgba(255,240,213,.54);
+  }
+  .site-footer__description {
+    font-size: clamp(15px, 3.8vw, 17px);
+    line-height: 1.5;
+    letter-spacing: -.025em;
+  }
+  .site-footer__navigation {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.18fr);
+    width: 100%;
+    gap: 12px;
+  }
+  .site-footer__link-group { gap: 12px; min-width: 0; }
+  .site-footer__eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .125em;
+    margin-bottom: 8px;
+  }
+  .site-footer__link {
+    font-size: clamp(15px, 4vw, 17px);
+    min-height: 27px;
+    line-height: 1.5;
+    gap: 5px;
+  }
+  .site-footer__ground { left: 18px; right: 18px; bottom: 20px; }
+  .site-footer__version { min-height: 45px; padding: 0 13px; font-size: 11px; }
+  .site-footer__to-top {
+    width: 46px;
+    height: 46px;
+    min-height: 46px;
+    justify-content: center;
+    padding: 0;
+    border-radius: 5px;
+  }
+  .site-footer__to-top-label { display: none; }
+  .site-footer__to-top svg { width: 21px; height: 21px; }
+}
+@media (max-width: 355px) {
+  .site-footer__sky { padding: 35px 15px 0; }
+  .site-footer__wordmark { font-size: 18.5vw; }
+  .site-footer__description { font-size: 14px; }
+  .site-footer__information { margin-top: 22px; padding-top: 17px; gap: 25px; }
+  .site-footer__link-group { gap: 10px; }
+  .site-footer__link { font-size: 14px; }
+  .site-footer__eyebrow { font-size: 10px; margin-bottom: 5px; }
+  .site-footer__ground { left: 15px; right: 15px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-footer__to-top { transition: none; }
+}
+/* Seam is already joined pixel-for-pixel by the reflected sky; an opaque
+   top wash would hide the real stars on one side and recreate a hard edge. */
+.site-footer::before { display: none; }
