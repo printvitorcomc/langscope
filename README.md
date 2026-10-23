@@ -14,6 +14,7 @@ Mini-app estático, mobile-first, com **22 linguagens de programação**: rankin
 - Visual escuro, responsivo, sem dependências de framework ou etapa de compilação.
 - Duas heroes em largura total, com cerca de 70% da altura da tela, fundos abstratos próprios para desktop e mobile e textos HTML acessíveis.
 - Seção ilustrada **Como interpretar esses dados** em Ranking e Comparação, com três cards que distinguem a pesquisa da Stack Overflow, a estimativa de dificuldade e as métricas de uso.
+- Nos cards explicativos: destaque ao passar o mouse, inclinação e movimento suave da imagem conforme o cursor, somente em desktop com mouse (a partir de 1024px). Entrada gradual e brilho discreto durante o carregamento das imagens, com respeito à preferência por movimento reduzido.
 - Footer compartilhado de tela cheia, com paisagens vetoriais distintas para desktop e mobile, navegação entre visualizações e retorno ao topo.
 
 ## Execução local
@@ -59,6 +60,8 @@ index.html         marcação e navegação
 styles.css         visual e responsividade
 footer.css         footer e transição contínua
 footer-scene.js    extensão do céu em Canvas, desenhada apenas ao entrar/redimensionar
+interpretation.css animações de entrada, carregamento e hover dos cards explicativos
+interpretation.js  entrada ao aparecer e interação do mouse apenas no desktop
 app.js             dados, ranking, filtros e comparação
 favicon.svg        ícone da aba
 icons/             símbolos genéricos para SQL e Assembly

@@ -1,0 +1,69 @@
+/* Artwork loading and entrance; the existing card dimensions stay unchanged. */
+.explanation--cards .explanation-card { position: relative; }
+.explanation--cards .explanation-media { position: relative; }
+.explanation--cards .explanation-media.is-loading img { opacity: 0; }
+.explanation--cards .explanation-media.is-loading::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 25%, #ffffff09 48%, transparent 72%);
+  animation: interpretation-loading 1.6s ease-in-out infinite;
+  pointer-events: none;
+}
+.explanation--cards .explanation-card.is-revealed .explanation-media.is-loaded img {
+  animation: interpretation-art-enter .85s ease-out both;
+  animation-delay: var(--entry-delay, 0ms);
+}
+.explanation--cards .explanation-card.is-revealed .explanation-card-body {
+  animation: interpretation-copy-enter .65s cubic-bezier(.2,.65,.3,1) both;
+  animation-delay: var(--entry-delay, 0ms);
+}
+@keyframes interpretation-loading {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(100%); }
+}
+@keyframes interpretation-art-enter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes interpretation-copy-enter {
+  from { opacity: .25; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
+  .explanation--cards .explanation-card {
+    transition: border-color .25s ease, box-shadow .3s ease, transform .4s ease;
+  }
+  .explanation--cards .explanation-card:hover {
+    border-color: #ffffff45;
+    box-shadow: 0 16px 42px #00000024;
+  }
+}
+@media (min-width: 1024px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .explanation--cards .explanation-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(280px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), #ffffff0f, transparent 72%);
+    opacity: 0;
+    transition: opacity .3s ease;
+    pointer-events: none;
+  }
+  .explanation--cards .explanation-card.is-pointer-active {
+    transform: perspective(1100px) translateY(-4px) rotateX(var(--rotate-x, 0deg)) rotateY(var(--rotate-y, 0deg));
+    will-change: transform;
+  }
+  .explanation--cards .explanation-card.is-pointer-active::after { opacity: 1; }
+  .explanation--cards .explanation-media img { transition: transform .45s ease; }
+  .explanation--cards .explanation-card.is-pointer-active .explanation-media img {
+    transform: translate3d(var(--art-x, 0px), var(--art-y, 0px), 0) scale(1.045);
+    will-change: transform;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .explanation--cards .explanation-card,
+  .explanation--cards .explanation-media img { transition: none; }
+  .explanation--cards .explanation-card.is-revealed .explanation-card-body,
+  .explanation--cards .explanation-card.is-revealed .explanation-media.is-loaded img,
+  .explanation--cards .explanation-media.is-loading::before { animation: none; }
+}
